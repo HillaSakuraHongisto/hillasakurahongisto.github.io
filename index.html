@@ -1,0 +1,2307 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>Chrome自带恐龙小游戏的源码研究(完) - 逐影 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-hy83QNg62d4qYibixJzxMJkbf1P9fTBlqv7SK5zVL01"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/CodingLife/bundle-CodingLife.css?v=g4Oce5UBaUn_FUwadcT09ICEg5NkULQGtUpNhTtrI8U1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/122709.css?v=z9qzhGNXepHjmP19thSCaXW%2blwk%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/CodingLife/bundle-CodingLife-mobile.css?v=Xay8b9tTSw814nBzbOgvS6rrbcxrobMhvHJHdZAO9vI1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/undefined000/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/undefined000/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/undefined000/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'undefined000', cb_enable_mathjax=true;var isLogined=false;</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'blogpost-body', processEscapes: true },
+        TeX: { 
+            equationNumbers: { autoNumber: ['AMS'], useLabelIds: true }, extensions: ['extpfeil.js'] },
+            'HTML-CSS': { linebreaks: { automatic: true } },
+            SVG: { linebreaks: { automatic: true } }
+        });
+    </script><script src="//mathjax.cnblogs.com/2_7_2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/bundles/blog-common.js?v=4q95wAIWKQDgrZwHAtALn4FfGI87ALsr8w_pWkf4BTs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<style>
+#ad_t2,#ad_c1,#under_post_news,#ad_c2,#under_post_kb,#sidebar_recentcomments,#sidebar_imagecategory{display:none}
+.sidebar-block ul li{padding:2px 10px}
+</style>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/undefined000/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/undefined000/">逐影</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="http://www.cnblogs.com/undefined000/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E9%80%90%E5%BD%B1">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="http://www.cnblogs.com/undefined000/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="http://www.cnblogs.com/undefined000/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 55&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 50</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/undefined000/p/trex_8.html">Chrome自带恐龙小游戏的源码研究(完)</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>　　在上一篇《<a href="http://www.cnblogs.com/undefined000/p/trex_7.html" target="_blank">Chrome自带恐龙小游戏的源码研究(七)</a>》中研究了恐龙与障碍物的碰撞检测，这一篇主要研究组成游戏的其它要素。</p>
+<blockquote>
+<p><span style="font-size: 18px;">游戏分数记录</span></p>
+</blockquote>
+<p><img src="https://images2015.cnblogs.com/blog/428166/201612/428166-20161214200349479-214939588.png" alt="" /></p>
+<p>　　如图所示，分数及最高分记录显示在游戏界面的右上角，每达到100分就会出现闪烁特效，游戏第一次gameover时显示历史最高分。分数记录器由DistanceMeter构造函数实现，以下是它的全部代码：</p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('e08c188b-6260-4a51-b670-a24c1a897e55')"><img id="code_img_closed_e08c188b-6260-4a51-b670-a24c1a897e55" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_e08c188b-6260-4a51-b670-a24c1a897e55" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('e08c188b-6260-4a51-b670-a24c1a897e55',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_e08c188b-6260-4a51-b670-a24c1a897e55" class="cnblogs_code_hide">
+<pre><span style="color: #008080;">  1</span> DistanceMeter.dimensions =<span style="color: #000000;"> {
+</span><span style="color: #008080;">  2</span>     WIDTH: 10,    <span style="color: #008000;">//</span><span style="color: #008000;">每个字符的宽度</span>
+<span style="color: #008080;">  3</span>     HEIGHT: 13,    <span style="color: #008000;">//</span><span style="color: #008000;">每个字符的高</span>
+<span style="color: #008080;">  4</span>     DEST_WIDTH: 11 <span style="color: #008000;">//</span><span style="color: #008000;">间隙</span>
+<span style="color: #008080;">  5</span> <span style="color: #000000;">};
+</span><span style="color: #008080;">  6</span> DistanceMeter.config =<span style="color: #000000;"> {
+</span><span style="color: #008080;">  7</span>     <span style="color: #008000;">//</span><span style="color: #008000;"> 初始时记录的分数上限为5位数，即99999</span>
+<span style="color: #008080;">  8</span>     MAX_DISTANCE_UNITS: 5<span style="color: #000000;">,
+</span><span style="color: #008080;">  9</span> 
+<span style="color: #008080;"> 10</span>     <span style="color: #008000;">//</span><span style="color: #008000;"> 每隔100米距离记录器的数字出现闪动特效</span>
+<span style="color: #008080;"> 11</span>     ACHIEVEMENT_DISTANCE: 100<span style="color: #000000;">,
+</span><span style="color: #008080;"> 12</span> 
+<span style="color: #008080;"> 13</span>     <span style="color: #008000;">//</span><span style="color: #008000;"> 将移动距离转化为合理的数值所用的转化系数</span>
+<span style="color: #008080;"> 14</span>     COEFFICIENT: 0.025<span style="color: #000000;">,
+</span><span style="color: #008080;"> 15</span> 
+<span style="color: #008080;"> 16</span>     <span style="color: #008000;">//</span><span style="color: #008000;"> 每250ms闪动一次</span>
+<span style="color: #008080;"> 17</span>     FLASH_DURATION: 1000 / 4<span style="color: #000000;">,
+</span><span style="color: #008080;"> 18</span> 
+<span style="color: #008080;"> 19</span>     <span style="color: #008000;">//</span><span style="color: #008000;"> 闪动次数</span>
+<span style="color: #008080;"> 20</span>     FLASH_ITERATIONS: 3
+<span style="color: #008080;"> 21</span> <span style="color: #000000;">};
+</span><span style="color: #008080;"> 22</span> <span style="color: #008000;">/*</span><span style="color: #008000;">*
+</span><span style="color: #008080;"> 23</span> <span style="color: #008000;">         * 距离记录器
+</span><span style="color: #008080;"> 24</span> <span style="color: #008000;">         * @param {HTMLCanvasElement} canvas
+</span><span style="color: #008080;"> 25</span> <span style="color: #008000;">         * @param {Object} spritePos 雪碧图上的坐标.
+</span><span style="color: #008080;"> 26</span> <span style="color: #008000;">         * @param {number} canvasWidth
+</span><span style="color: #008080;"> 27</span> <span style="color: #008000;">         * @constructor
+</span><span style="color: #008080;"> 28</span>          <span style="color: #008000;">*/</span>
+<span style="color: #008080;"> 29</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> DistanceMeter(canvas, spritePos, canvasWidth) {
+</span><span style="color: #008080;"> 30</span>     <span style="color: #0000ff;">this</span>.canvas =<span style="color: #000000;"> canvas;
+</span><span style="color: #008080;"> 31</span>     <span style="color: #0000ff;">this</span>.canvasCtx = canvas.getContext('2d'<span style="color: #000000;">);
+</span><span style="color: #008080;"> 32</span>     <span style="color: #0000ff;">this</span>.image =<span style="color: #000000;"> imgSprite;
+</span><span style="color: #008080;"> 33</span>     <span style="color: #0000ff;">this</span>.spritePos =<span style="color: #000000;"> spritePos;
+</span><span style="color: #008080;"> 34</span>     <span style="color: #008000;">//</span><span style="color: #008000;">相对坐标</span>
+<span style="color: #008080;"> 35</span>     <span style="color: #0000ff;">this</span>.x = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 36</span>     <span style="color: #0000ff;">this</span>.y = 5<span style="color: #000000;">;
+</span><span style="color: #008080;"> 37</span> 
+<span style="color: #008080;"> 38</span>     <span style="color: #008000;">//</span><span style="color: #008000;">最大分数</span>
+<span style="color: #008080;"> 39</span>     <span style="color: #0000ff;">this</span>.maxScore = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 40</span>     <span style="color: #008000;">//</span><span style="color: #008000;">高分榜</span>
+<span style="color: #008080;"> 41</span>     <span style="color: #0000ff;">this</span>.highScore = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 42</span> 
+<span style="color: #008080;"> 43</span>     <span style="color: #0000ff;">this</span>.digits =<span style="color: #000000;"> [];
+</span><span style="color: #008080;"> 44</span>     <span style="color: #008000;">//</span><span style="color: #008000;">是否进行闪动特效</span>
+<span style="color: #008080;"> 45</span>     <span style="color: #0000ff;">this</span>.acheivement = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;"> 46</span>     <span style="color: #0000ff;">this</span>.defaultString = ''<span style="color: #000000;">;
+</span><span style="color: #008080;"> 47</span>     <span style="color: #008000;">//</span><span style="color: #008000;">闪动特效计时器</span>
+<span style="color: #008080;"> 48</span>     <span style="color: #0000ff;">this</span>.flashTimer = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 49</span>     <span style="color: #008000;">//</span><span style="color: #008000;">闪动计数器</span>
+<span style="color: #008080;"> 50</span>     <span style="color: #0000ff;">this</span>.flashIterations = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 51</span>     <span style="color: #0000ff;">this</span>.invertTrigger = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;"> 52</span> 
+<span style="color: #008080;"> 53</span>     <span style="color: #0000ff;">this</span>.config =<span style="color: #000000;"> DistanceMeter.config;
+</span><span style="color: #008080;"> 54</span>     <span style="color: #008000;">//</span><span style="color: #008000;">最大记录为万位数</span>
+<span style="color: #008080;"> 55</span>     <span style="color: #0000ff;">this</span>.maxScoreUnits = <span style="color: #0000ff;">this</span><span style="color: #000000;">.config.MAX_DISTANCE_UNITS;
+</span><span style="color: #008080;"> 56</span>     <span style="color: #0000ff;">this</span><span style="color: #000000;">.init(canvasWidth);
+</span><span style="color: #008080;"> 57</span> <span style="color: #000000;">}
+</span><span style="color: #008080;"> 58</span> 
+<span style="color: #008080;"> 59</span> DistanceMeter.prototype =<span style="color: #000000;"> {
+</span><span style="color: #008080;"> 60</span>     <span style="color: #008000;">/*</span><span style="color: #008000;">*
+</span><span style="color: #008080;"> 61</span> <span style="color: #008000;">             * 初始化距离记录器为00000
+</span><span style="color: #008080;"> 62</span> <span style="color: #008000;">             * @param canvasWidth canvas的宽度
+</span><span style="color: #008080;"> 63</span>              <span style="color: #008000;">*/</span>
+<span style="color: #008080;"> 64</span>     init: <span style="color: #0000ff;">function</span><span style="color: #000000;">(canvasWidth) {
+</span><span style="color: #008080;"> 65</span>         <span style="color: #0000ff;">var</span> maxDistanceStr = ''<span style="color: #000000;">;
+</span><span style="color: #008080;"> 66</span> 
+<span style="color: #008080;"> 67</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.calcXPos(canvasWidth);
+</span><span style="color: #008080;"> 68</span>         <span style="color: #0000ff;">for</span> (<span style="color: #0000ff;">var</span> i = 0; i &lt; <span style="color: #0000ff;">this</span>.maxScoreUnits; i++<span style="color: #000000;">) {
+</span><span style="color: #008080;"> 69</span>             <span style="color: #0000ff;">this</span>.draw(i, 0<span style="color: #000000;">);
+</span><span style="color: #008080;"> 70</span>             <span style="color: #0000ff;">this</span>.defaultString += '0'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 71</span>             maxDistanceStr += '9'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 72</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;"> 73</span> 
+<span style="color: #008080;"> 74</span>         <span style="color: #008000;">//</span><span style="color: #008000;">99999</span>
+<span style="color: #008080;"> 75</span>         <span style="color: #0000ff;">this</span>.maxScore =<span style="color: #000000;"> parseInt(maxDistanceStr);
+</span><span style="color: #008080;"> 76</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;"> 77</span>     <span style="color: #008000;">/*</span><span style="color: #008000;">*
+</span><span style="color: #008080;"> 78</span> <span style="color: #008000;">             * 计算出xPos
+</span><span style="color: #008080;"> 79</span> <span style="color: #008000;">             * @param canvasWidth
+</span><span style="color: #008080;"> 80</span>              <span style="color: #008000;">*/</span>
+<span style="color: #008080;"> 81</span>     calcXPos: <span style="color: #0000ff;">function</span><span style="color: #000000;">(canvasWidth) {
+</span><span style="color: #008080;"> 82</span>         <span style="color: #0000ff;">this</span>.x = canvasWidth - (DistanceMeter.dimensions.DEST_WIDTH * (<span style="color: #0000ff;">this</span>.maxScoreUnits + 1<span style="color: #000000;">));
+</span><span style="color: #008080;"> 83</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;"> 84</span>     draw: <span style="color: #0000ff;">function</span><span style="color: #000000;">(digitPos, value, opt_highScore) {
+</span><span style="color: #008080;"> 85</span>         <span style="color: #0000ff;">var</span> sourceWidth =<span style="color: #000000;"> DistanceMeter.dimensions.WIDTH;
+</span><span style="color: #008080;"> 86</span>         <span style="color: #0000ff;">var</span> sourceHeight =<span style="color: #000000;"> DistanceMeter.dimensions.HEIGHT;
+</span><span style="color: #008080;"> 87</span>         <span style="color: #0000ff;">var</span> sourceX = DistanceMeter.dimensions.WIDTH *<span style="color: #000000;"> value;
+</span><span style="color: #008080;"> 88</span>         <span style="color: #0000ff;">var</span> sourceY = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 89</span> 
+<span style="color: #008080;"> 90</span>         <span style="color: #0000ff;">var</span> targetX = digitPos *<span style="color: #000000;"> DistanceMeter.dimensions.DEST_WIDTH;
+</span><span style="color: #008080;"> 91</span>         <span style="color: #0000ff;">var</span> targetY = <span style="color: #0000ff;">this</span><span style="color: #000000;">.y;
+</span><span style="color: #008080;"> 92</span>         <span style="color: #0000ff;">var</span> targetWidth =<span style="color: #000000;"> DistanceMeter.dimensions.WIDTH;
+</span><span style="color: #008080;"> 93</span>         <span style="color: #0000ff;">var</span> targetHeight =<span style="color: #000000;"> DistanceMeter.dimensions.HEIGHT;
+</span><span style="color: #008080;"> 94</span> 
+<span style="color: #008080;"> 95</span>         sourceX += <span style="color: #0000ff;">this</span><span style="color: #000000;">.spritePos.x;
+</span><span style="color: #008080;"> 96</span>         sourceY += <span style="color: #0000ff;">this</span><span style="color: #000000;">.spritePos.y;
+</span><span style="color: #008080;"> 97</span> 
+<span style="color: #008080;"> 98</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.canvasCtx.save();
+</span><span style="color: #008080;"> 99</span> 
+<span style="color: #008080;">100</span>         <span style="color: #0000ff;">if</span><span style="color: #000000;"> (opt_highScore) {
+</span><span style="color: #008080;">101</span>             <span style="color: #008000;">//</span><span style="color: #008000;"> 将最高分放至当前分数的左边</span>
+<span style="color: #008080;">102</span>             <span style="color: #0000ff;">var</span> highScoreX = <span style="color: #0000ff;">this</span>.x - (<span style="color: #0000ff;">this</span>.maxScoreUnits * 2) *<span style="color: #000000;"> DistanceMeter.dimensions.WIDTH;
+</span><span style="color: #008080;">103</span>             <span style="color: #0000ff;">this</span>.canvasCtx.translate(highScoreX, <span style="color: #0000ff;">this</span><span style="color: #000000;">.y);
+</span><span style="color: #008080;">104</span>         } <span style="color: #0000ff;">else</span><span style="color: #000000;"> {
+</span><span style="color: #008080;">105</span>             <span style="color: #0000ff;">this</span>.canvasCtx.translate(<span style="color: #0000ff;">this</span>.x, <span style="color: #0000ff;">this</span><span style="color: #000000;">.y);
+</span><span style="color: #008080;">106</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">107</span> 
+<span style="color: #008080;">108</span>         <span style="color: #0000ff;">this</span>.canvasCtx.drawImage(<span style="color: #0000ff;">this</span><span style="color: #000000;">.image, sourceX, sourceY, sourceWidth, sourceHeight, targetX, targetY, targetWidth, targetHeight);
+</span><span style="color: #008080;">109</span> 
+<span style="color: #008080;">110</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.canvasCtx.restore();
+</span><span style="color: #008080;">111</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;">112</span>     <span style="color: #008000;">/*</span><span style="color: #008000;">*
+</span><span style="color: #008080;">113</span> <span style="color: #008000;">             * 将像素距离转化为&ldquo;真实距离&rdquo;
+</span><span style="color: #008080;">114</span> <span style="color: #008000;">             * @param distance  像素距离
+</span><span style="color: #008080;">115</span> <span style="color: #008000;">             * @returns {number} &ldquo;真实距离&rdquo;
+</span><span style="color: #008080;">116</span>              <span style="color: #008000;">*/</span>
+<span style="color: #008080;">117</span>     getActualDistance: <span style="color: #0000ff;">function</span><span style="color: #000000;">(distance) {
+</span><span style="color: #008080;">118</span>         <span style="color: #0000ff;">return</span> distance ? Math.round(distance * <span style="color: #0000ff;">this</span>.config.COEFFICIENT) : 0<span style="color: #000000;">;
+</span><span style="color: #008080;">119</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;">120</span>     <span style="color: #008000;">/*</span><span style="color: #008000;">*
+</span><span style="color: #008080;">121</span> <span style="color: #008000;">             * 更新距离记录器
+</span><span style="color: #008080;">122</span> <span style="color: #008000;">             * @param {number} deltaTime
+</span><span style="color: #008080;">123</span> <span style="color: #008000;">             * @param {number} distance
+</span><span style="color: #008080;">124</span> <span style="color: #008000;">             * @returns {boolean} 是否播放声音
+</span><span style="color: #008080;">125</span>              <span style="color: #008000;">*/</span>
+<span style="color: #008080;">126</span>     update: <span style="color: #0000ff;">function</span><span style="color: #000000;">(deltaTime, distance) {
+</span><span style="color: #008080;">127</span>         <span style="color: #0000ff;">var</span> paint = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;">128</span>         <span style="color: #0000ff;">var</span> playSound = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">129</span> 
+<span style="color: #008080;">130</span>         <span style="color: #0000ff;">if</span> (!<span style="color: #0000ff;">this</span><span style="color: #000000;">.acheivement) {
+</span><span style="color: #008080;">131</span>             distance = <span style="color: #0000ff;">this</span><span style="color: #000000;">.getActualDistance(distance);
+</span><span style="color: #008080;">132</span>             <span style="color: #008000;">//</span><span style="color: #008000;"> 分数超过最大分数时增加至十万位999999</span>
+<span style="color: #008080;">133</span>             <span style="color: #0000ff;">if</span> (distance &gt; <span style="color: #0000ff;">this</span>.maxScore &amp;&amp; <span style="color: #0000ff;">this</span>.maxScoreUnits === <span style="color: #0000ff;">this</span><span style="color: #000000;">.config.MAX_DISTANCE_UNITS) {
+</span><span style="color: #008080;">134</span>                 <span style="color: #0000ff;">this</span>.maxScoreUnits++<span style="color: #000000;">;
+</span><span style="color: #008080;">135</span>                 <span style="color: #0000ff;">this</span>.maxScore = parseInt(<span style="color: #0000ff;">this</span>.maxScore + '9'<span style="color: #000000;">);
+</span><span style="color: #008080;">136</span> <span style="color: #000000;">            }
+</span><span style="color: #008080;">137</span> 
+<span style="color: #008080;">138</span>             <span style="color: #0000ff;">if</span> (distance &gt; 0<span style="color: #000000;">) {
+</span><span style="color: #008080;">139</span>                 <span style="color: #008000;">//</span><span style="color: #008000;"> 每100距离开始闪动特效并播放声音</span>
+<span style="color: #008080;">140</span>                 <span style="color: #0000ff;">if</span> (distance % <span style="color: #0000ff;">this</span>.config.ACHIEVEMENT_DISTANCE === 0<span style="color: #000000;">) {
+</span><span style="color: #008080;">141</span>                     <span style="color: #0000ff;">this</span>.acheivement = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;">142</span>                     <span style="color: #0000ff;">this</span>.flashTimer = 0<span style="color: #000000;">;
+</span><span style="color: #008080;">143</span>                     playSound = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;">144</span> <span style="color: #000000;">                }
+</span><span style="color: #008080;">145</span> 
+<span style="color: #008080;">146</span>                 <span style="color: #008000;">//</span><span style="color: #008000;"> 让数字以0开头</span>
+<span style="color: #008080;">147</span>                 <span style="color: #0000ff;">var</span> distanceStr = (<span style="color: #0000ff;">this</span>.defaultString + distance).substr( - <span style="color: #0000ff;">this</span><span style="color: #000000;">.maxScoreUnits);
+</span><span style="color: #008080;">148</span>                 <span style="color: #0000ff;">this</span>.digits = distanceStr.split(''<span style="color: #000000;">);
+</span><span style="color: #008080;">149</span>             } <span style="color: #0000ff;">else</span><span style="color: #000000;"> {
+</span><span style="color: #008080;">150</span>                 <span style="color: #0000ff;">this</span>.digits = <span style="color: #0000ff;">this</span>.defaultString.split(''<span style="color: #000000;">);
+</span><span style="color: #008080;">151</span> <span style="color: #000000;">            }
+</span><span style="color: #008080;">152</span>         } <span style="color: #0000ff;">else</span><span style="color: #000000;"> {
+</span><span style="color: #008080;">153</span>             <span style="color: #008000;">//</span><span style="color: #008000;"> 到达目标分数时闪动分数</span>
+<span style="color: #008080;">154</span>             <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">this</span>.flashIterations &lt;= <span style="color: #0000ff;">this</span><span style="color: #000000;">.config.FLASH_ITERATIONS) {
+</span><span style="color: #008080;">155</span>                 <span style="color: #0000ff;">this</span>.flashTimer +=<span style="color: #000000;"> deltaTime;
+</span><span style="color: #008080;">156</span> 
+<span style="color: #008080;">157</span>                 <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">this</span>.flashTimer &lt; <span style="color: #0000ff;">this</span><span style="color: #000000;">.config.FLASH_DURATION) {
+</span><span style="color: #008080;">158</span>                     paint = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">159</span>                 } <span style="color: #0000ff;">else</span> <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">this</span>.flashTimer &gt; <span style="color: #0000ff;">this</span>.config.FLASH_DURATION * 2<span style="color: #000000;">) {
+</span><span style="color: #008080;">160</span>                     <span style="color: #0000ff;">this</span>.flashTimer = 0<span style="color: #000000;">;
+</span><span style="color: #008080;">161</span>                     <span style="color: #0000ff;">this</span>.flashIterations++<span style="color: #000000;">;
+</span><span style="color: #008080;">162</span> <span style="color: #000000;">                }
+</span><span style="color: #008080;">163</span>             } <span style="color: #0000ff;">else</span><span style="color: #000000;"> {
+</span><span style="color: #008080;">164</span>                 <span style="color: #0000ff;">this</span>.acheivement = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">165</span>                 <span style="color: #0000ff;">this</span>.flashIterations = 0<span style="color: #000000;">;
+</span><span style="color: #008080;">166</span>                 <span style="color: #0000ff;">this</span>.flashTimer = 0<span style="color: #000000;">;
+</span><span style="color: #008080;">167</span> <span style="color: #000000;">            }
+</span><span style="color: #008080;">168</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">169</span> 
+<span style="color: #008080;">170</span>         <span style="color: #008000;">//</span><span style="color: #008000;"> 非闪动时绘制分数</span>
+<span style="color: #008080;">171</span>         <span style="color: #0000ff;">if</span><span style="color: #000000;"> (paint) {
+</span><span style="color: #008080;">172</span>             <span style="color: #0000ff;">for</span> (<span style="color: #0000ff;">var</span> i = <span style="color: #0000ff;">this</span>.digits.length - 1; i &gt;= 0; i--<span style="color: #000000;">) {
+</span><span style="color: #008080;">173</span>                 <span style="color: #0000ff;">this</span>.draw(i, parseInt(<span style="color: #0000ff;">this</span><span style="color: #000000;">.digits[i]));
+</span><span style="color: #008080;">174</span> <span style="color: #000000;">            }
+</span><span style="color: #008080;">175</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">176</span> 
+<span style="color: #008080;">177</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.drawHighScore();
+</span><span style="color: #008080;">178</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> playSound;
+</span><span style="color: #008080;">179</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;">180</span>     <span style="color: #008000;">//</span><span style="color: #008000;">绘制高分榜</span>
+<span style="color: #008080;">181</span>     drawHighScore: <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">182</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.canvasCtx.save();
+</span><span style="color: #008080;">183</span>         <span style="color: #0000ff;">this</span>.canvasCtx.globalAlpha = .8; <span style="color: #008000;">//</span><span style="color: #008000;">让字符看起来颜色稍浅</span>
+<span style="color: #008080;">184</span>         <span style="color: #0000ff;">for</span> (<span style="color: #0000ff;">var</span> i = <span style="color: #0000ff;">this</span>.highScore.length - 1; i &gt;= 0; i--<span style="color: #000000;">) {
+</span><span style="color: #008080;">185</span>             <span style="color: #0000ff;">this</span>.draw(i, parseInt(<span style="color: #0000ff;">this</span>.highScore[i], 10), <span style="color: #0000ff;">true</span><span style="color: #000000;">);
+</span><span style="color: #008080;">186</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">187</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.canvasCtx.restore();
+</span><span style="color: #008080;">188</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;">189</span>     setHighScore: <span style="color: #0000ff;">function</span><span style="color: #000000;">(distance) {
+</span><span style="color: #008080;">190</span>         distance = <span style="color: #0000ff;">this</span><span style="color: #000000;">.getActualDistance(distance);
+</span><span style="color: #008080;">191</span>         <span style="color: #0000ff;">var</span> highScoreStr = (<span style="color: #0000ff;">this</span>.defaultString + distance).substr( - <span style="color: #0000ff;">this</span><span style="color: #000000;">.maxScoreUnits);
+</span><span style="color: #008080;">192</span>         <span style="color: #008000;">//</span><span style="color: #008000;">10和11分别对应雪碧图中的H、I</span>
+<span style="color: #008080;">193</span>         <span style="color: #0000ff;">this</span>.highScore = ['10', '11', ''].concat(highScoreStr.split(''<span style="color: #000000;">));
+</span><span style="color: #008080;">194</span> <span style="color: #000000;">    },
+</span><span style="color: #008080;">195</span>     <span style="color: #008000;">//</span><span style="color: #008000;">重置记录器为00000</span>
+<span style="color: #008080;">196</span>     reset: <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">197</span>         <span style="color: #0000ff;">this</span>.update(0<span style="color: #000000;">);
+</span><span style="color: #008080;">198</span>         <span style="color: #0000ff;">this</span>.acheivement = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">199</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">200</span> };</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">GameOver</span></p>
+</blockquote>
+<p>　　恐龙和障碍物碰撞后，游戏结束，游戏界面显示gameover面板，该功能由GameOverPanel构造函数实现：</p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('7d90150c-5f7e-4d66-a4db-1d702f8c9f24')"><img id="code_img_closed_7d90150c-5f7e-4d66-a4db-1d702f8c9f24" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_7d90150c-5f7e-4d66-a4db-1d702f8c9f24" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('7d90150c-5f7e-4d66-a4db-1d702f8c9f24',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_7d90150c-5f7e-4d66-a4db-1d702f8c9f24" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> GameOverPanel.dimensions =<span style="color: #000000;"> {
+</span><span style="color: #008080;"> 2</span>     TEXT_X: 0<span style="color: #000000;">,
+</span><span style="color: #008080;"> 3</span>     TEXT_Y: 13<span style="color: #000000;">,
+</span><span style="color: #008080;"> 4</span>     TEXT_WIDTH: 191<span style="color: #000000;">,
+</span><span style="color: #008080;"> 5</span>     TEXT_HEIGHT: 11<span style="color: #000000;">,
+</span><span style="color: #008080;"> 6</span>     RESTART_WIDTH: 36<span style="color: #000000;">,
+</span><span style="color: #008080;"> 7</span>     RESTART_HEIGHT: 32
+<span style="color: #008080;"> 8</span> <span style="color: #000000;">};
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> GameOverPanel(canvas, textImgPos, restartImgPos, dimensions) {
+</span><span style="color: #008080;">11</span>     <span style="color: #0000ff;">this</span>.canvas =<span style="color: #000000;"> canvas;
+</span><span style="color: #008080;">12</span>     <span style="color: #0000ff;">this</span>.canvasCtx = canvas.getContext('2d'<span style="color: #000000;">);
+</span><span style="color: #008080;">13</span>     <span style="color: #0000ff;">this</span>.canvasDimensions =<span style="color: #000000;"> dimensions;
+</span><span style="color: #008080;">14</span>     <span style="color: #0000ff;">this</span>.textImgPos =<span style="color: #000000;"> textImgPos;
+</span><span style="color: #008080;">15</span>     <span style="color: #0000ff;">this</span>.restartImgPos =<span style="color: #000000;"> restartImgPos;
+</span><span style="color: #008080;">16</span>     <span style="color: #0000ff;">this</span><span style="color: #000000;">.draw();
+</span><span style="color: #008080;">17</span> <span style="color: #000000;">}
+</span><span style="color: #008080;">18</span> 
+<span style="color: #008080;">19</span> GameOverPanel.prototype =<span style="color: #000000;"> {
+</span><span style="color: #008080;">20</span>     draw: <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">21</span>         <span style="color: #0000ff;">var</span> dimensions =<span style="color: #000000;"> GameOverPanel.dimensions;
+</span><span style="color: #008080;">22</span> 
+<span style="color: #008080;">23</span>         <span style="color: #0000ff;">var</span> centerX = <span style="color: #0000ff;">this</span>.canvasDimensions.WIDTH / 2<span style="color: #000000;">;
+</span><span style="color: #008080;">24</span> 
+<span style="color: #008080;">25</span>         <span style="color: #008000;">//</span><span style="color: #008000;"> Game over text</span>
+<span style="color: #008080;">26</span>         <span style="color: #0000ff;">var</span> textSourceX =<span style="color: #000000;"> dimensions.TEXT_X;
+</span><span style="color: #008080;">27</span>         <span style="color: #0000ff;">var</span> textSourceY =<span style="color: #000000;"> dimensions.TEXT_Y;
+</span><span style="color: #008080;">28</span>         <span style="color: #0000ff;">var</span> textSourceWidth =<span style="color: #000000;"> dimensions.TEXT_WIDTH;
+</span><span style="color: #008080;">29</span>         <span style="color: #0000ff;">var</span> textSourceHeight =<span style="color: #000000;"> dimensions.TEXT_HEIGHT;
+</span><span style="color: #008080;">30</span> 
+<span style="color: #008080;">31</span>         <span style="color: #0000ff;">var</span> textTargetX = Math.round(centerX - (dimensions.TEXT_WIDTH / 2<span style="color: #000000;">));
+</span><span style="color: #008080;">32</span>         <span style="color: #0000ff;">var</span> textTargetY = Math.round((<span style="color: #0000ff;">this</span>.canvasDimensions.HEIGHT - 25) / 3<span style="color: #000000;">);
+</span><span style="color: #008080;">33</span>         <span style="color: #0000ff;">var</span> textTargetWidth =<span style="color: #000000;"> dimensions.TEXT_WIDTH;
+</span><span style="color: #008080;">34</span>         <span style="color: #0000ff;">var</span> textTargetHeight =<span style="color: #000000;"> dimensions.TEXT_HEIGHT;
+</span><span style="color: #008080;">35</span> 
+<span style="color: #008080;">36</span>         <span style="color: #0000ff;">var</span> restartSourceWidth =<span style="color: #000000;"> dimensions.RESTART_WIDTH;
+</span><span style="color: #008080;">37</span>         <span style="color: #0000ff;">var</span> restartSourceHeight =<span style="color: #000000;"> dimensions.RESTART_HEIGHT;
+</span><span style="color: #008080;">38</span>         <span style="color: #0000ff;">var</span> restartTargetX = centerX - (dimensions.RESTART_WIDTH / 2<span style="color: #000000;">);
+</span><span style="color: #008080;">39</span>         <span style="color: #0000ff;">var</span> restartTargetY = <span style="color: #0000ff;">this</span>.canvasDimensions.HEIGHT / 2<span style="color: #000000;">;
+</span><span style="color: #008080;">40</span> 
+<span style="color: #008080;">41</span>         textSourceX += <span style="color: #0000ff;">this</span><span style="color: #000000;">.textImgPos.x;
+</span><span style="color: #008080;">42</span>         textSourceY += <span style="color: #0000ff;">this</span><span style="color: #000000;">.textImgPos.y;
+</span><span style="color: #008080;">43</span> 
+<span style="color: #008080;">44</span>         <span style="color: #008000;">//</span><span style="color: #008000;"> Game over text from sprite.</span>
+<span style="color: #008080;">45</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.canvasCtx.drawImage(imgSprite, textSourceX, textSourceY, textSourceWidth, textSourceHeight, textTargetX, textTargetY, textTargetWidth, textTargetHeight);
+</span><span style="color: #008080;">46</span> 
+<span style="color: #008080;">47</span>         <span style="color: #008000;">//</span><span style="color: #008000;"> Restart button.</span>
+<span style="color: #008080;">48</span>         <span style="color: #0000ff;">this</span>.canvasCtx.drawImage(imgSprite, <span style="color: #0000ff;">this</span>.restartImgPos.x, <span style="color: #0000ff;">this</span><span style="color: #000000;">.restartImgPos.y, restartSourceWidth, restartSourceHeight, restartTargetX, restartTargetY, dimensions.RESTART_WIDTH, dimensions.RESTART_HEIGHT);
+</span><span style="color: #008080;">49</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">50</span> };</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code" onclick="cnblogs_code_show('417b3b06-0f3d-4e15-9039-b39df7880aab')"><img id="code_img_closed_417b3b06-0f3d-4e15-9039-b39df7880aab" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_417b3b06-0f3d-4e15-9039-b39df7880aab" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('417b3b06-0f3d-4e15-9039-b39df7880aab',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_417b3b06-0f3d-4e15-9039-b39df7880aab" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> gameOver() {
+</span><span style="color: #008080;"> 2</span> <span style="color: #000000;">    cancelAnimationFrame(raq);
+</span><span style="color: #008080;"> 3</span>     raq = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 4</span>     crashed = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;"> 5</span>     trex.update(0<span style="color: #000000;">, Trex.status.CRASHED);
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span>     distanceMeter.acheivement = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;"> 8</span>     <span style="color: #0000ff;">if</span> (distanceRan &gt;<span style="color: #000000;"> highestScore) {
+</span><span style="color: #008080;"> 9</span>         highestScore =<span style="color: #000000;"> Math.ceil(distanceRan);
+</span><span style="color: #008080;">10</span> <span style="color: #000000;">        distanceMeter.setHighScore(highestScore);
+</span><span style="color: #008080;">11</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">12</span> 
+<span style="color: #008080;">13</span>     <span style="color: #0000ff;">if</span> (!<span style="color: #000000;">gameOverPanel) {
+</span><span style="color: #008080;">14</span>         gameOverPanel = <span style="color: #0000ff;">new</span><span style="color: #000000;"> GameOverPanel(c, spriteDefinition.TEXT_SPRITE, spriteDefinition.RESTART, dimensions);
+</span><span style="color: #008080;">15</span>     } <span style="color: #0000ff;">else</span><span style="color: #000000;"> {
+</span><span style="color: #008080;">16</span> <span style="color: #000000;">        gameOverPanel.draw();
+</span><span style="color: #008080;">17</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">18</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">游戏重新开始</span></p>
+</blockquote>
+<p>　　GameOver后，按下<code>Spacebar</code>游戏重新开始，restart方法负责将游戏各个元素或数据重置：</p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('d0a0b176-a4a7-4ba2-9149-82232a632b0f')"><img id="code_img_closed_d0a0b176-a4a7-4ba2-9149-82232a632b0f" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_d0a0b176-a4a7-4ba2-9149-82232a632b0f" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('d0a0b176-a4a7-4ba2-9149-82232a632b0f',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_d0a0b176-a4a7-4ba2-9149-82232a632b0f" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> restart() {
+</span><span style="color: #008080;"> 2</span> <span style="color: #000000;">    trex.reset();
+</span><span style="color: #008080;"> 3</span>     Obstacle.obstacles =<span style="color: #000000;"> [];
+</span><span style="color: #008080;"> 4</span> <span style="color: #000000;">    h.reset();
+</span><span style="color: #008080;"> 5</span> <span style="color: #000000;">    night.reset();
+</span><span style="color: #008080;"> 6</span>     crashed = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;"> 7</span>     time =<span style="color: #000000;"> performance.now();
+</span><span style="color: #008080;"> 8</span>     distanceRan = 0<span style="color: #000000;">;
+</span><span style="color: #008080;"> 9</span>     ctx.clearRect(0, 0, 600, 150<span style="color: #000000;">);
+</span><span style="color: #008080;">10</span> <span style="color: #000000;">    distanceMeter.reset();
+</span><span style="color: #008080;">11</span>     raq =<span style="color: #000000;"> requestAnimationFrame(draw, c);
+</span><span style="color: #008080;">12</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">游戏暂停</span></p>
+</blockquote>
+<p>　　当游戏窗口失去焦点时，游戏暂停，得到焦点时游戏继续。游戏通过注册三个事件来实现：</p>
+<div class="cnblogs_code">
+<pre>document.addEventListener('visibilitychange'<span style="color: #000000;">,onVisibilityChange);
+window.addEventListener(</span>'blur'<span style="color: #000000;">,onVisibilityChange);
+window.addEventListener(</span>'focus',onVisibilityChange);</pre>
+</div>
+<div class="cnblogs_code" onclick="cnblogs_code_show('9a6961e4-588a-46e7-b53c-da38847d393b')"><img id="code_img_closed_9a6961e4-588a-46e7-b53c-da38847d393b" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_9a6961e4-588a-46e7-b53c-da38847d393b" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('9a6961e4-588a-46e7-b53c-da38847d393b',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_9a6961e4-588a-46e7-b53c-da38847d393b" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> onVisibilityChange: <span style="color: #0000ff;">function</span><span style="color: #000000;">(e) {
+</span><span style="color: #008080;"> 2</span>     <span style="color: #0000ff;">if</span> (document.hidden || document.webkitHidden || e.type == 'blur' || document.visibilityState != 'visible'<span style="color: #000000;">) {
+</span><span style="color: #008080;"> 3</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.stop();
+</span><span style="color: #008080;"> 4</span>     } <span style="color: #0000ff;">else</span> <span style="color: #0000ff;">if</span> (!<span style="color: #0000ff;">this</span><span style="color: #000000;">.crashed) {
+</span><span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.tRex.reset();
+</span><span style="color: #008080;"> 6</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.play();
+</span><span style="color: #008080;"> 7</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 8</span> <span style="color: #000000;">},
+</span><span style="color: #008080;"> 9</span> stop: <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">10</span>     <span style="color: #0000ff;">this</span>.activated = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">11</span>     <span style="color: #0000ff;">this</span>.paused = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;">12</span>     cancelAnimationFrame(<span style="color: #0000ff;">this</span><span style="color: #000000;">.raqId);
+</span><span style="color: #008080;">13</span>     <span style="color: #0000ff;">this</span>.raqId = 0<span style="color: #000000;">;
+</span><span style="color: #008080;">14</span> <span style="color: #000000;">},
+</span><span style="color: #008080;">15</span> play: <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">16</span>     <span style="color: #0000ff;">if</span> (!<span style="color: #0000ff;">this</span><span style="color: #000000;">.crashed) {
+</span><span style="color: #008080;">17</span>         <span style="color: #0000ff;">this</span>.activated = <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+</span><span style="color: #008080;">18</span>         <span style="color: #0000ff;">this</span>.paused = <span style="color: #0000ff;">false</span><span style="color: #000000;">;
+</span><span style="color: #008080;">19</span>         <span style="color: #0000ff;">this</span>.tRex.update(0<span style="color: #000000;">, Trex.status.RUNNING);
+</span><span style="color: #008080;">20</span>         <span style="color: #0000ff;">this</span>.time =<span style="color: #000000;"> getTimeStamp();
+</span><span style="color: #008080;">21</span>         <span style="color: #0000ff;">this</span><span style="color: #000000;">.update();
+</span><span style="color: #008080;">22</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">23</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">开场动画</span></p>
+</blockquote>
+<p>　　第一次开始游戏时，会有一个过渡动画，效果是地面逐渐展开，并且恐龙向前移动50像素。</p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('c82ced91-b275-4c4c-8557-41df47cd9ec7')"><img id="code_img_closed_c82ced91-b275-4c4c-8557-41df47cd9ec7" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_c82ced91-b275-4c4c-8557-41df47cd9ec7" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('c82ced91-b275-4c4c-8557-41df47cd9ec7',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_c82ced91-b275-4c4c-8557-41df47cd9ec7" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #008000;">//</span><span style="color: #008000;"> CSS animation definition.</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">var</span> keyframes = '@-webkit-keyframes intro { ' + 'from { width:' + Trex.config.WIDTH + 'px }' + 'to { width: ' + <span style="color: #0000ff;">this</span>.dimensions.WIDTH + 'px }' + '}'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 3</span> document.styleSheets[0].insertRule(keyframes, 0<span style="color: #000000;">);
+</span><span style="color: #008080;"> 4</span> 
+<span style="color: #008080;"> 5</span> <span style="color: #0000ff;">this</span>.containerEl.addEventListener('webkitAnimationEnd', <span style="color: #0000ff;">this</span>.startGame.bind(<span style="color: #0000ff;">this</span><span style="color: #000000;">));
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span> <span style="color: #0000ff;">this</span>.containerEl.style.webkitAnimation = 'intro .4s ease-out 1 both'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 8</span> <span style="color: #0000ff;">this</span>.containerEl.style.width = <span style="color: #0000ff;">this</span>.dimensions.WIDTH + 'px'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span> 
+<span style="color: #008080;">11</span> <span style="color: #008000;">//</span><span style="color: #008000;">向前移动50像素</span>
+<span style="color: #008080;">12</span> <span style="color: #0000ff;">if</span> (<span style="color: #0000ff;">this</span>.playingIntro &amp;&amp; <span style="color: #0000ff;">this</span>.xPos &lt; <span style="color: #0000ff;">this</span><span style="color: #000000;">.config.START_X_POS) {
+</span><span style="color: #008080;">13</span>     <span style="color: #0000ff;">this</span>.xPos += Math.round((<span style="color: #0000ff;">this</span>.config.START_X_POS / <span style="color: #0000ff;">this</span>.config.INTRO_DURATION) *<span style="color: #000000;"> deltaTime);
+</span><span style="color: #008080;">14</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">游戏音效</span></p>
+</blockquote>
+<p>　　游戏准备了三种音效，分别是游戏点击空格键开始时、与障碍物碰撞时、每到达100分时。游戏在代码中放置了三个audio标签来存放音效，并且是base64形式，所以在播放时要经过解码，可以查阅文档了解<code>AudioContext API</code>的用法：</p>
+<div class="cnblogs_code" onclick="cnblogs_code_show('bfbee131-ec05-4ab3-9380-a87bb0e64c1b')"><img id="code_img_closed_bfbee131-ec05-4ab3-9380-a87bb0e64c1b" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_bfbee131-ec05-4ab3-9380-a87bb0e64c1b" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('bfbee131-ec05-4ab3-9380-a87bb0e64c1b',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_bfbee131-ec05-4ab3-9380-a87bb0e64c1b" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> decodeBase64ToArrayBuffer(base64String) {
+</span><span style="color: #008080;"> 2</span>     <span style="color: #0000ff;">var</span> len = (base64String.length / 4) * 3<span style="color: #000000;">;
+</span><span style="color: #008080;"> 3</span>     <span style="color: #0000ff;">var</span> str =<span style="color: #000000;"> atob(base64String);
+</span><span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">var</span> arrayBuffer = <span style="color: #0000ff;">new</span><span style="color: #000000;"> ArrayBuffer(len);
+</span><span style="color: #008080;"> 5</span>     <span style="color: #0000ff;">var</span> bytes = <span style="color: #0000ff;">new</span><span style="color: #000000;"> Uint8Array(arrayBuffer);
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span>     <span style="color: #0000ff;">for</span> (<span style="color: #0000ff;">var</span> i = 0; i &lt; len; i++<span style="color: #000000;">) {
+</span><span style="color: #008080;"> 8</span>         bytes[i] =<span style="color: #000000;"> str.charCodeAt(i);
+</span><span style="color: #008080;"> 9</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">10</span>     <span style="color: #0000ff;">return</span><span style="color: #000000;"> bytes.buffer;
+</span><span style="color: #008080;">11</span> }</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<div class="cnblogs_code" onclick="cnblogs_code_show('8717f806-d6ba-4f5f-b6c1-224003208a0b')"><img id="code_img_closed_8717f806-d6ba-4f5f-b6c1-224003208a0b" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" /><img id="code_img_opened_8717f806-d6ba-4f5f-b6c1-224003208a0b" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('8717f806-d6ba-4f5f-b6c1-224003208a0b',event)" src="https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" />
+<div id="cnblogs_code_open_8717f806-d6ba-4f5f-b6c1-224003208a0b" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">var</span> data = '........base64String.......'<span style="color: #000000;">;
+</span><span style="color: #008080;"> 2</span> <span style="color: #0000ff;">var</span> soundFx =<span style="color: #000000;"> {};
+</span><span style="color: #008080;"> 3</span> <span style="color: #0000ff;">var</span> soundSrc = data.substr(data.indexOf(',')+1<span style="color: #000000;">);
+</span><span style="color: #008080;"> 4</span> <span style="color: #0000ff;">var</span> buffer =<span style="color: #000000;"> decodeBase64ToArrayBuffer(soundSrc);
+</span><span style="color: #008080;"> 5</span> <span style="color: #0000ff;">var</span> audioContext = <span style="color: #0000ff;">new</span><span style="color: #000000;"> AudioContext();
+</span><span style="color: #008080;"> 6</span> audioContext.decodeAudioData(buffer,<span style="color: #0000ff;">function</span><span style="color: #000000;">(index,audioData) {
+</span><span style="color: #008080;"> 7</span>     soundFx[index] =<span style="color: #000000;"> audioData;
+</span><span style="color: #008080;"> 8</span> }.bind(<span style="color: #0000ff;">this</span>,'audio1'<span style="color: #000000;">));
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span> <span style="color: #0000ff;">function</span><span style="color: #000000;"> playSound(soundBuffer) {
+</span><span style="color: #008080;">11</span>     <span style="color: #0000ff;">if</span><span style="color: #000000;"> (soundBuffer) {
+</span><span style="color: #008080;">12</span>         <span style="color: #0000ff;">var</span> sourceNode =<span style="color: #000000;"> audioContext.createBufferSource();
+</span><span style="color: #008080;">13</span>         sourceNode.buffer =<span style="color: #000000;"> soundBuffer;
+</span><span style="color: #008080;">14</span> <span style="color: #000000;">        sourceNode.connect(audioContext.destination);
+</span><span style="color: #008080;">15</span>         sourceNode.start(0<span style="color: #000000;">);
+</span><span style="color: #008080;">16</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">17</span> <span style="color: #000000;">}
+</span><span style="color: #008080;">18</span> 
+<span style="color: #008080;">19</span> window.onload = <span style="color: #0000ff;">function</span><span style="color: #000000;">() {
+</span><span style="color: #008080;">20</span>     playSound(soundFx['audio1'<span style="color: #000000;">]);
+</span><span style="color: #008080;">21</span> };</pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<p>&nbsp;</p>
+<blockquote>
+<p><span style="font-size: 18px;">对移动设备的处理</span>　　</p>
+</blockquote>
+<p>　　游戏还专门对移动设备进行了处理，包括屏幕大小的自适应，游戏速度调节，为高清屏加载高清素材等等。具体代码就不一一列出了。</p>
+<p>　　至此，对这个小游戏的代码研究结束，下面是完整的游戏：</p>
+<style><!--
+#offline-resources{
+			display: none;
+		}
+		.runner-container {
+			height: 150px;
+			max-width: 600px;
+			overflow: hidden;
+                        opacity:1;
+		}
+		#c{
+			height: 150px;
+			max-width: 600px;
+			opacity: 1;
+		}
+		.offline {
+			transition: -webkit-filter 1.5s cubic-bezier(0.65, 0.05, 0.36, 1),
+			background-color 1.5s cubic-bezier(0.65, 0.05, 0.36, 1);
+			will-change: -webkit-filter, background-color;
+		}
+
+		.offline.inverted {
+			-webkit-filter: invert(100%);
+			background-color: #000;
+		}
+--></style>
+<div id="runner-container" class="runner-container offline" style="height: 200px; width: 602px; background: #fff;">&nbsp;</div>
+<p><span style="font-size: 18px;"><img id="sprite" style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABNEAAABECAAAAACKI/xBAAAAAnRSTlMAAHaTzTgAAAoOSURBVHgB7J1bdqS4FkSDu7gPTYSh2AOATw1Pn6kBVA2FieiTrlesq6po8lgt0pj02b06E58HlRhXOCQBBcdxHMdxHOfDMeA7BfcIOI4VwISDKQhvK0O4H9iAobeFZSx8WIK0dqz4ztQRg1XdECNfX/CTGUDmNjJDP6MzuMnKKsQ0Y+Amyxnirurmx1KghAvWXoARAErEPUpAB/KzvK6YcAIl8lD2AtsCbENPS1XGwqMTSnvHhNOYgBV3mKlklKDqPUshMUIzsuzlOXFGW9AQS0C/lv/QMWrahOMoiKZL41HyUCRAdcKyDR0tVRkLD0+oV7Q7yLofm6w6rKbdrmNUL6NOyapMtGcUuixZ2WSHbsl+M97BoUX8TrpyrfGbJJ+saBQ0W9I6jnxF/ZO+4nqo66GQneo325keUjth7bFpX38MO6lbM+ZMaeOYETISzYzN9Wiy7shuyj4dI96JSQXuOMSlWcqkgQ2DSlVdUSIbWbVs2vJ41CvadDs0jTE63Y9NWO26r3x9MU3AzDGk1mQWZu2Bht6VaPzEXrl21gjyZRXNPnKFI8+TJnRKLEED24JNpaqqKBGx/C5oWLSlBR0+Pp4J5yM27YVydp8sX4p+SUGe661TuWE5Y78dtcDSX3u+oqWINjLmRm+wTsBUJWpK06pKaXZpJdbmhoH/LcByq6Rq+LMC+7Dl+OFjvzj2ObRJY/tOa1r/uUvDy9d9QaPz4utMP6ZDysxsPeScf3yly6bOfRbcemtPYESvpAn20GSS0efVKOGc4aNQgojj1ZnzvTEnkxqzOVfGllP3y9qnZ0S3pM2mK5jMwQcpiMb1ZVqdkBANl1aCFbBbdOR6Pvwgtjiu9vkx60jrXNpq15E8ywhz/2tbzGQQwQ4b59Zfe7aipVrSEhCP8mZG1UlzZ20tOgw9Hw6hrzCLZiyObqCkVauZFC0OPL8nqUrk/zHN1gopOfkzngH3fv8SQau20jtMQ09VUSmxQUS1OsZSDAWSwKNFq5SylzA6PhFf+Oo4x3m0pEuYKXb4s5WLAAaT1lwfc3Kr6CDZ6JD6hrUCWVhmjHFrzNk17pxWjdGl/Yi9AuBrBqAbusmvGNNCyWpbhvPU82j1aDMi9Q04p8aLaQtiw7plXZ0A7TwDSojO/GsCiAnE6qAGhg45/eAu7csrunGcEUpEN5NsXYDlUY6Mie67UGPTPiiO1xl0vgLYvXt83glmvkux7ke6WdGzz7mKmiSQM2ufmPEoQUv9d2fu3jEazGqc79JUQjRxghoZT9FoiJnjzvbYtDJGOXOcoxUt4hMybAucE3nloJPOSJh5v6cm8gwFWrnn72aj1txnvR+5RrzoXy8kBOAStWBtw/foGvd1NnyX+h2a+LXQUH2XKAFT0uLpi9byzXg2vrzy9Z6eAZmqIUnHoaJ9PlIofwaAYQMWu6XituAE6vWBgifhla/Xp3ClqjpFESRdt5Z+WCIkQ68vHNBAXysZH3CmuufhInRurCagvLk6QNXpbwMDNvouu+Vn/fLeVo3rA084PzAYiwDtzB1jIB3Jmvuc0YqzQRk6W0d8LhIQ9gPkNhSpEGjr2HKW4XyOuznthx/M+8V/W5+7/vRZ9yARQ4L5a18IIBetJbN18/oGYNjRHwyHt6qiJSj9R25zZ55M7Uiq6u3qglDF2KmBCqqTVqhNO0bQSp+gxRJkV9fi68uP/z8TzgYd3tyw9bQOqBUtpmdd9wwlGoGKGzDstMR7LR1EtENp582d1z5jL3yGrc79y83pSsbBZHquNluXZd5DfteKbbhaLc+Ongp1tUslUUvDve1drSPuSFoE2o/8AIL6rspChrbqZkkb0N5yhNa2E3B95Bm2vN+8m/me3lE9WaGp3LbPPDc/u9VZoJFbZ+uoCvaMhAJEDTS2xOO/Tdzp+Xs6C3mG7fXhnXlR4gnx4rXU7dma/FTl0YS29beOjztTx6NOUF2aVrNEe/bZa4m6+nmuEJUAbnFP15xH+/7fHU/FYG6LG+SmVL5bmnFZ/Ho0J4WP4NK4KMCtS7u0p/Bo9ngnXbfWXnVu/DcNdGf9rRgfeab6sWfR1KXZ1Z0kY7+l3rIToQCImiD2U9y4FepFaHm44jpJjDTGlOmfxVbGHMc92nkEW/PrrRSKJiqjF4CiHaqBNqEuLPxDLsGL/+xcvFavbLph6W89TdHCw5wZCW2zXggfe4Sqcc2oBhYYSAc+EY4zGhM5/teid0osBSaaBC3F/vPAjvpxsdDx5Dp1jjsnI7Y+95hT5z+erpZkzB/dpY2wJS0FPfLH0/wsj/AhJS0FJuTaWOPbHWFbN/9VdCUSwtPW5g81j2aMZULDkbtLE+GSBKOCdGiCURtVTXFpp7KCuEtzl3braVVFQ+g/8n6eQil/X24MmjAIe+oYJNqwK2M8uU5mXc8652rXOY6vdZ6NvdyoiXZ1jBqNcC7o0tKVaw2XlltdGs0VUwsYGTpbxwPO1JXcU7gTGLYfrx0tx6tjsW/PsjHd14p2l+YOzXGPdirBDAwdLe9sAf54IEh86zLA2qQj64SGYp9EM674Dk9Rqy4tY58B2MRqVRZOIr2t44FnymfRzlyJSOHBLg2rOzSnn5vxjI3O1hHXxyVNb8zqt2mNi6OrGzR9egPfH1QLREQgFSDs17Ky/zOoS+O7wVJNfN1axjh108L93G8dH3umelx7gGMTCuLbbfJEQZEYha6KGTbN9l2r+zNn2xkwLnzorNWqsLVP0eaGXMZ74pLWDNXLL0N7+GRnAmdqwgNqE4O7tQkREQmp+zMoudWlATcMaIRN28ErA5nv9pF/6PtEnak/1r8H53lRR6bcfuYe0DrCcZxL3vdk19PHBZQz73u6AT0ODZWGbTAY33Ud0nEcZ3hg64gmZjiO81YiCkK1dXytBauO/wwzsmxBqc3VIhP6DVNw5FhFywDS24/cKeHRCdLfoTiO3zMw58+uYUX/HYD2BLETinY4Z5Bk6+jaFo79DFm3LG4Q+pr6r97I5pH7pRsllgiQUEJ7QsSRCdN2aYfjuEczNDnollPLSKm/7EhQ6pgQ2yUKpx3OaQTZOra2gf7P0M/Q3+ScTJlLX6KgECb49h02lFLudPzVzn0lNQwEURQdrfGuc9anX34AIzk21c/xHjLYCo/JU2W1kLTm/7BeP7kkSZIkZbj0JhHZgDdAg5UeAA6f9f8Ar//eMZqUxs8ggs7BhAEarPQAsPm+hwFus4SnG6Mx3pI0xwEX/syoMMDteO0x17QlCd5m/CbX0STs9m3RDggXBLpKWv5S83eSF787y1Wd5apuCcXDHFu0HL1wPGbhz6lL2WL2VYrtE6NPZW7usXAEy1WZ5epGInCMMLhTBsCQ5erTyhXVlAASQROIjO0FvHBFh+evzparEMvVsp8XMGZ5HuHL3cZGzpu884kxZtN/1HLVynL1uiRJkvQFUg1OaKSaqSkAAAAASUVORK5CYII=" alt="test" /></span></p>
+<p><span style="font-size: 18px;">
+<script type="text/javascript">// <![CDATA[
+var canvas = document.createElement('canvas'),
+        a = document.getElementById('runner-container');
+    canvas.id = 'c';
+    canvas.width = 600;
+    canvas.height = 150;
+    a.appendChild(canvas);
+
+    var canvas = document.getElementById('c'),
+        ctx = canvas.getContext('2d');
+
+
+		//坐标
+		var spriteDefinition = {
+			CACTUS_LARGE: {x: 332, y: 2},	//大仙人掌
+		    CACTUS_SMALL: {x: 228, y: 2},	//小仙人掌
+		    CLOUD: {x: 86, y: 2},			//云
+		    HORIZON: {x: 2, y: 54},			//地面
+		    MOON: {x: 484, y: 2},			//月亮
+		    PTERODACTYL: {x: 134, y: 2},	//翼龙
+		    RESTART: {x: 2, y: 2},			//重新开始按钮
+		    TEXT_SPRITE: {x: 655, y: 2},	//分数
+		    TREX: {x: 848, y: 2},			//霸王龙
+		    STAR: {x: 645, y: 2}			//星星
+		},
+		FPS = 60,
+		DEFAULT_WIDTH = 600,
+		c = document.getElementById('c'),
+		ctx = c.getContext('2d'),
+		imgSprite = document.getElementById('sprite');
+
+		Runner.config = {
+			ACCELERATION: 0.001,
+			BG_CLOUD_SPEED: 0.2,
+			BOTTOM_PAD: 10,
+			CLEAR_TIME: 3000,
+			CLOUD_FREQUENCY: 0.5,
+			GAMEOVER_CLEAR_TIME: 750,
+			GAP_COEFFICIENT: 0.6,
+			GRAVITY: 0.6,
+			INITIAL_JUMP_VELOCITY: 12,
+			INVERT_FADE_DURATION: 10000,	//夜晚持续时间
+			INVERT_DISTANCE: 700,	//每700距离进行昼夜交替
+			MAX_CLOUDS: 6,			//云最大数量
+			MAX_OBSTACLE_LENGTH: 3,
+			MAX_OBSTACLE_DUPLICATION: 2,
+			MAX_SPEED: 13,
+			MIN_JUMP_HEIGHT: 35,
+			MOBILE_SPEED_COEFFICIENT: 1.2,
+			RESOURCE_TEMPLATE_ID: 'audio-resources',
+			SPEED: 6,
+			SPEED_DROP_COEFFICIENT: 3
+		};
+		Runner.defaultDimensions = {
+			HEIGHT:150,
+			WIDTH:600
+		};
+
+		Runner.classes = {
+			CANVAS: 'runner-canvas',
+			CONTAINER: 'runner-container',
+			CRASHED: 'crashed',
+			ICON: 'icon-offline',
+			INVERTED: 'inverted',
+			SNACKBAR: 'snackbar',
+			SNACKBAR_SHOW: 'snackbar-show',
+			TOUCH_CONTROLLER: 'controller'
+		};
+
+		Runner.sounds = {
+			BUTTON_PRESS: 'offline-sound-press',
+			HIT: 'offline-sound-hit',
+			SCORE: 'offline-sound-reached'
+		};
+
+		Runner.keycodes = {
+			JUMP: {'38': 1, '32': 1},  // Up, spacebar
+			DUCK: {'40': 1},  // Down
+			RESTART: {'13': 1}  // Enter
+		};
+
+		Runner.events = {
+			ANIM_END: 'webkitAnimationEnd',
+			CLICK: 'click',
+			KEYDOWN: 'keydown',
+			KEYUP: 'keyup',
+			MOUSEDOWN: 'mousedown',
+			MOUSEUP: 'mouseup',
+			RESIZE: 'resize',
+			TOUCHEND: 'touchend',
+			TOUCHSTART: 'touchstart',
+			VISIBILITY: 'visibilitychange',
+			BLUR: 'blur',
+			FOCUS: 'focus',
+			LOAD: 'load'
+		};
+
+		function Runner(outerContainerId,opt_config) {
+			if (Runner.instance_) {
+				return Runner.instance_;
+			}
+			Runner.instance_ = this;
+			//this.outerContainerEl = document.querySelector(outerContainerId);
+			this.containerEl = null;
+			this.snackbarEl = null;
+			//this.detailsButton = this.outerContainerEl.querySelector('#details-button');
+			this.config = opt_config || Runner.config;
+			this.dimensions = Runner.defaultDimensions;
+			this.canvas = null;
+			this.ctx = null;
+
+			this.tRex = null;
+			this.distanceMeter = null;
+			this.distanceRan = 0;
+			this.highestScore = 0;
+
+			this.time = 0;
+			this.runningTime = 0;
+			this.msPerFrame = 1000 / FPS;
+			this.currentSpeed = this.config.SPEED;
+
+			this.obstacles = [];  //障碍物
+
+			this.started = false;
+			this.activated = false;
+			this.crashed = false;
+			this.paused = false;
+			this.inverted = false;
+			this.invertTimer = 0;
+			this.resizeTimerId_ = null;
+
+			this.playCount = 0;
+
+			// Sound FX.
+			this.audioBuffer = null;
+			this.soundFx = {};
+
+			// Global web audio context for playing sounds.
+			this.audioContext = null;
+
+			// Images.
+			this.images = {};
+			this.imagesLoaded = 0;
+
+			this.loadImages();
+		}
+
+		Runner.prototype = {
+			loadImages:function() {
+				this.spriteDef = spriteDefinition;
+				this.init();
+			},
+			loadSounds:function() {
+				this.audioContext = new AudioContext();
+			},
+			setSpeed:function(opt_speed) {
+				if(opt_speed) this.currentSpeed = opt_speed;
+			},
+			init:function() {
+				this.setSpeed();
+				this.canvas = c;
+				this.ctx = ctx;
+				this.ctx.fillStyle = '#f7f7f7';
+				this.ctx.fill();
+
+				this.horizon = new Horizon(this.canvas, this.spriteDef, this.dimensions,
+						this.config.GAP_COEFFICIENT);
+
+				this.distanceMeter = new DistanceMeter(this.canvas,this.spriteDef.TEXT_SPRITE, this.dimensions.WIDTH);
+
+				this.tRex = new Trex(this.canvas, this.spriteDef.TREX);
+
+				this.startListening();
+				this.update();
+			},
+			//开场动画
+			playIntro:function() {
+				if(!this.started &&  !this.crashed) {
+					this.playingIntro = true;
+					this.tRex.playingIntro = true;
+
+					var keyframes = '@-webkit-keyframes intro { ' +
+							'from { width:' + Trex.config.WIDTH + 'px }' +
+							'to { width: ' + this.dimensions.WIDTH + 'px }' +
+							'}';
+					document.styleSheets[0].insertRule(keyframes, 0);
+					this.containerEl = document.getElementById('runner-container');
+					this.containerEl.addEventListener('webkitAnimationEnd',
+							this.startGame.bind(this));
+
+					this.containerEl.style.webkitAnimation = 'intro .4s ease-out 1 both';
+					this.containerEl.style.width = this.dimensions.WIDTH + 'px';
+
+					this.activated = true;
+					this.started = true;
+				} else if (this.crashed) {
+					this.restart();
+				}
+			},
+			startGame:function() {
+				this.runningTime = 0;
+				this.playingIntro = false;
+				this.tRex.playingIntro = false;
+				this.containerEl.style.webkitAnimation = '';
+				this.playCount++;
+
+				document.addEventListener('visibilitychange',this.onVisibilityChange.bind(this));
+				window.addEventListener('blur',this.onVisibilityChange.bind(this));
+				window.addEventListener('focus',this.onVisibilityChange.bind(this));
+			},
+			clearCanvas:function() {
+				this.ctx.clearRect(0, 0, this.dimensions.WIDTH,this.dimensions.HEIGHT);
+			},
+			//todo
+			update:function() {
+				this.drawPending = false;
+
+				var now = getTimeStamp();
+				var deltaTime = now - (this.time || now);
+				this.time = now;
+
+				if (this.activated) {
+
+					this.clearCanvas();
+
+					if (this.tRex.jumping) {
+						this.tRex.updateJump(deltaTime);
+					}
+
+					this.runningTime += deltaTime;
+					var hasObstacles = this.runningTime > this.config.CLEAR_TIME;
+					//如果是第一次跳跃并且没有播放开场动画，则播放开场动画
+					if (this.tRex.jumpCount == 1 && !this.playingIntro) {
+						this.playIntro();
+					}
+
+					if (this.playingIntro) {
+						this.horizon.update(0, this.currentSpeed, hasObstacles);
+					} else {
+						deltaTime = !this.started ? 0 : deltaTime;
+						this.horizon.update(deltaTime, this.currentSpeed, hasObstacles,
+								this.inverted);
+					}
+					var collision = hasObstacles &&
+							checkForCollision(this.horizon.obstacles[0], this.tRex);
+
+					if (!collision) {
+						this.distanceRan += this.currentSpeed * deltaTime / this.msPerFrame;
+
+						if (this.currentSpeed < this.config.MAX_SPEED) {
+							this.currentSpeed += this.config.ACCELERATION;
+						}
+					} else {
+						this.gameOver();
+					}
+
+					var playAchievementSound = this.distanceMeter.update(deltaTime,
+							Math.ceil(this.distanceRan));
+
+					if (playAchievementSound) {
+						this.playSound(this.soundFx.SCORE);
+					}
+					//若夜晚持续时间大于设定值则变为白天
+					if (this.invertTimer > this.config.INVERT_FADE_DURATION) {
+						this.invertTimer = 0;
+						this.invertTrigger = false;
+						this.invert();
+					} else if (this.invertTimer) {
+						this.invertTimer += deltaTime;
+					} else {
+						var actualDistance =
+								this.distanceMeter.getActualDistance(Math.ceil(this.distanceRan));
+
+						if (actualDistance > 0) {
+							this.invertTrigger = !(actualDistance %
+							this.config.INVERT_DISTANCE);
+
+							if (this.invertTrigger && this.invertTimer === 0) {
+								this.invertTimer += deltaTime;
+								this.invert();
+							}
+						}
+					}
+				}
+				if (!this.crashed) {
+					this.tRex.update(deltaTime);
+					this.raq();
+				}
+			},
+			handleEvent: function(e) {
+				return (function(evtType, events) {
+					switch (evtType) {
+						case events.KEYDOWN:
+						case events.TOUCHSTART:
+						case events.MOUSEDOWN:
+							this.onKeyDown(e);
+							break;
+						case events.KEYUP:
+						case events.TOUCHEND:
+						case events.MOUSEUP:
+							this.onKeyUp(e);
+							break;
+					}
+				}.bind(this))(e.type, Runner.events);
+			},
+			startListening:function() {
+				document.addEventListener(Runner.events.KEYDOWN, this);
+				document.addEventListener(Runner.events.KEYUP, this);
+				document.addEventListener(Runner.events.MOUSEDOWN, this);
+				document.addEventListener(Runner.events.MOUSEUP, this);
+			},
+			stopListening:function() {
+				document.removeEventListener(Runner.events.KEYDOWN, this);
+				document.removeEventListener(Runner.events.KEYUP, this);
+				document.removeEventListener(Runner.events.MOUSEDOWN, this);
+				document.removeEventListener(Runner.events.MOUSEUP, this);
+			},
+			onKeyDown:function (e) {
+
+				if (e.target != this.detailsButton) {
+					if (!this.crashed && Runner.keycodes.JUMP[e.keyCode]) {
+e.preventDefault();
+						if (!this.activated) {
+							this.loadSounds();
+							this.activated = true;
+						}
+						if (!this.tRex.jumping && !this.tRex.ducking) {
+							this.tRex.startJump(this.currentSpeed);
+						}
+					}
+				}
+				if (this.activated && !this.crashed && Runner.keycodes.DUCK[e.keyCode]) {
+
+					e.preventDefault();
+					if (this.tRex.jumping) {
+						// Speed drop, activated only when jump key is not pressed.
+						this.tRex.setSpeedDrop();
+					} else if (!this.tRex.jumping && !this.tRex.ducking) {
+						// Duck.
+						this.tRex.setDuck(true);
+					}
+				}
+			},
+			onKeyUp:function(e) {
+				var keyCode = String(e.keyCode);
+				var isjumpKey = Runner.keycodes.JUMP[keyCode] ||
+						e.type == Runner.events.TOUCHEND ||
+						e.type == Runner.events.MOUSEDOWN;
+
+				if (this.isRunning() && isjumpKey) {
+e.preventDefault();
+					this.tRex.endJump();
+				} else if (Runner.keycodes.DUCK[keyCode]) {
+e.preventDefault();
+					this.tRex.speedDrop = false;
+					this.tRex.setDuck(false);
+				} else if (this.crashed) {
+e.preventDefault();
+					// Check that enough time has elapsed before allowing jump key to restart.
+					var deltaTime = getTimeStamp() - this.time;
+
+					if (Runner.keycodes.RESTART[keyCode] || this.isLeftClickOnCanvas(e) ||
+							(deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
+							Runner.keycodes.JUMP[keyCode])) {
+e.preventDefault();
+						this.restart();
+					}
+				} else if (this.paused && isjumpKey) {
+					// Reset the jump state
+e.preventDefault();
+					this.tRex.reset();
+					this.play();
+				}
+			},
+			isLeftClickOnCanvas: function(e) {
+				return e.button != null && e.button < 2 &&
+						e.type == Runner.events.MOUSEUP && e.target == this.canvas;
+			},
+			raq:function () {
+				if (!this.drawPending) {
+					this.drawPending = true;
+					this.raqId = requestAnimationFrame(this.update.bind(this));
+				}
+			},
+			isRunning: function() {
+				return !!this.raqId;
+			},
+			gameOver: function() {
+				//this.playSound(this.soundFx.HIT);
+				//vibrate(200);
+
+				this.stop();
+				this.crashed = true;
+				this.distanceMeter.acheivement = false;
+
+				this.tRex.update(100, Trex.status.CRASHED);
+
+				// Game over panel.
+				if (!this.gameOverPanel) {
+					this.gameOverPanel = new GameOverPanel(this.canvas,
+							this.spriteDef.TEXT_SPRITE, this.spriteDef.RESTART,
+							this.dimensions);
+				} else {
+					this.gameOverPanel.draw();
+				}
+
+				// Update the high score.
+				if (this.distanceRan > this.highestScore) {
+					this.highestScore = Math.ceil(this.distanceRan);
+					this.distanceMeter.setHighScore(this.highestScore);
+				}
+
+				// Reset the time clock.
+				this.time = getTimeStamp();
+			},
+			stop: function() {
+				this.activated = false;
+				this.paused = true;
+				cancelAnimationFrame(this.raqId);
+				this.raqId = 0;
+			},
+			play: function() {
+				if (!this.crashed) {
+					this.activated = true;
+					this.paused = false;
+					this.tRex.update(0, Trex.status.RUNNING);
+					this.time = getTimeStamp();
+					this.update();
+				}
+			},
+			restart: function() {
+				if (!this.raqId) {
+					this.playCount++;
+					this.runningTime = 0;
+					this.activated = true;
+					this.crashed = false;
+					this.distanceRan = 0;
+					this.setSpeed(this.config.SPEED);
+					this.time = getTimeStamp();
+					this.containerEl.classList.remove(Runner.classes.CRASHED);
+					this.clearCanvas();
+					this.distanceMeter.reset(this.highestScore);
+					this.horizon.reset();
+					this.tRex.reset();
+					//this.playSound(this.soundFx.BUTTON_PRESS);
+					this.invert(true);
+					this.update();
+				}
+			},
+			onVisibilityChange: function(e) {
+				if (document.hidden || document.webkitHidden || e.type == 'blur' ||
+						document.visibilityState != 'visible') {
+					this.stop();
+				} else if (!this.crashed) {
+					this.tRex.reset();
+					this.play();
+				}
+			},
+			playSound: function(soundBuffer) {
+				if (soundBuffer) {
+					var sourceNode = this.audioContext.createBufferSource();
+					sourceNode.buffer = soundBuffer;
+					sourceNode.connect(this.audioContext.destination);
+					sourceNode.start(0);
+				}
+			},
+			invert: function(reset) {
+				if (reset) {
+                    a.classList.toggle(Runner.classes.INVERTED,this.invertTrigger);
+                    //document.body.classList.toggle(Runner.classes.INVERTED,false);
+                    this.invertTimer = 0;
+					this.inverted = false;
+				} else {
+                    this.inverted = a.classList.toggle(Runner.classes.INVERTED,this.invertTrigger);
+
+                    //this.inverted = document.body.classList.toggle(Runner.classes.INVERTED,this.invertTrigger);
+				}
+			}
+		};
+
+		window['Runner'] = Runner;
+
+		function decodeBase64ToArrayBuffer(base64String) {
+			var len = (base64String.length / 4) * 3;
+			var str = atob(base64String);
+			var arrayBuffer = new ArrayBuffer(len);
+			var bytes = new Uint8Array(arrayBuffer);
+
+			for (var i = 0; i < len; i++) {
+				bytes[i] = str.charCodeAt(i);
+			}
+			return bytes.buffer;
+		}
+
+		GameOverPanel.dimensions = {
+			TEXT_X: 0,
+			TEXT_Y: 13,
+			TEXT_WIDTH: 191,
+			TEXT_HEIGHT: 11,
+			RESTART_WIDTH: 36,
+			RESTART_HEIGHT: 32
+		};
+
+		function GameOverPanel(canvas, textImgPos, restartImgPos, dimensions) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext('2d');
+			this.canvasDimensions = dimensions;
+			this.textImgPos = textImgPos;
+			this.restartImgPos = restartImgPos;
+			this.draw();
+		}
+
+
+		GameOverPanel.prototype = {
+			/**
+			 * Update the panel dimensions.
+			 * @param {number} width New canvas width.
+			 * @param {number} opt_height Optional new canvas height.
+			 */
+			updateDimensions: function(width, opt_height) {
+				this.canvasDimensions.WIDTH = width;
+				if (opt_height) {
+					this.canvasDimensions.HEIGHT = opt_height;
+				}
+			},
+
+			/**
+			 * Draw the panel.
+			 */
+			draw: function() {
+				var dimensions = GameOverPanel.dimensions;
+
+				var centerX = this.canvasDimensions.WIDTH / 2;
+
+				// Game over text.
+				var textSourceX = dimensions.TEXT_X;
+				var textSourceY = dimensions.TEXT_Y;
+				var textSourceWidth = dimensions.TEXT_WIDTH;
+				var textSourceHeight = dimensions.TEXT_HEIGHT;
+
+				var textTargetX = Math.round(centerX - (dimensions.TEXT_WIDTH / 2));
+				var textTargetY = Math.round((this.canvasDimensions.HEIGHT - 25) / 3);
+				var textTargetWidth = dimensions.TEXT_WIDTH;
+				var textTargetHeight = dimensions.TEXT_HEIGHT;
+
+				var restartSourceWidth = dimensions.RESTART_WIDTH;
+				var restartSourceHeight = dimensions.RESTART_HEIGHT;
+				var restartTargetX = centerX - (dimensions.RESTART_WIDTH / 2);
+				var restartTargetY = this.canvasDimensions.HEIGHT / 2;
+
+
+				textSourceX += this.textImgPos.x;
+				textSourceY += this.textImgPos.y;
+
+				// Game over text from sprite.
+				this.ctx.drawImage(imgSprite,
+						textSourceX, textSourceY, textSourceWidth, textSourceHeight,
+						textTargetX, textTargetY, textTargetWidth, textTargetHeight);
+
+				// Restart button.
+				this.ctx.drawImage(imgSprite,
+						this.restartImgPos.x, this.restartImgPos.y,
+						restartSourceWidth, restartSourceHeight,
+						restartTargetX, restartTargetY, dimensions.RESTART_WIDTH,
+						dimensions.RESTART_HEIGHT);
+			}
+		};
+
+
+		//地面
+		function HorizonLine(canvas,spritePos) {
+			this.spritePos = spritePos;
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.sourceDimensions = {};
+			this.dimensions = HorizonLine.dimensions;
+			this.sourceXPos = [this.spritePos.x,this.spritePos.x + this.dimensions.WIDTH];
+			this.xPos = [];
+			this.yPos = 0;
+			this.bumpThreshold = 0.5;	//地形系数
+
+			this.setSourceDimesions();
+			this.draw();
+		}
+
+		HorizonLine.dimensions = {
+			WIDTH:600,	//宽600
+			HEIGHT:12,	//高12像素
+			YPOS:127	//在画布中的位置
+		};
+
+		HorizonLine.prototype = {
+			setSourceDimesions:function() {
+				for(var dimension in HorizonLine.dimensions) {
+					this.sourceDimensions[dimension] = HorizonLine.dimensions[dimension];
+					this.dimensions[dimension] = HorizonLine.dimensions[dimension];
+				}
+				//地面在画布上的位置
+				this.xPos = [0,HorizonLine.dimensions.WIDTH];//0,600
+				this.yPos = HorizonLine.dimensions.YPOS;
+			},
+			//随机地形
+			getRandomType:function() {
+				return Math.random() > this.bumpThreshold ? this.dimensions.WIDTH : 0;
+			},
+			draw:function() {
+				this.ctx.drawImage(imgSprite, 
+					this.sourceXPos[0], this.spritePos.y,
+					this.sourceDimensions.WIDTH, this.sourceDimensions.HEIGHT,
+					this.xPos[0],this.yPos,
+					this.dimensions.WIDTH,this.dimensions.HEIGHT);
+
+				this.ctx.drawImage(imgSprite, 
+					this.sourceXPos[1], this.spritePos.y,
+					this.sourceDimensions.WIDTH, this.sourceDimensions.HEIGHT,
+					this.xPos[1],this.yPos,
+					this.dimensions.WIDTH,this.dimensions.HEIGHT);
+
+			},
+			updateXPos:function(pos,increment) {
+				var line1 = pos,
+					line2 = pos === 0 ? 1 : 0;
+
+				this.xPos[line1] -= increment;
+				this.xPos[line2] = this.xPos[line1] + this.dimensions.WIDTH;
+
+				if(this.xPos[line1] <= -this.dimensions.WIDTH) {
+					this.xPos[line1] += this.dimensions.WIDTH * 2;
+					this.xPos[line2] = this.xPos[line1] - this.dimensions.WIDTH;
+					this.sourceXPos[line1] = this.getRandomType() + this.spritePos.x;
+				}
+			},
+			update:function(deltaTime,speed) {
+				var increment = Math.floor(speed * (FPS / 1000) * deltaTime);
+				if(this.xPos[0] <= 0) {
+					this.updateXPos(0, increment);
+				} else {
+					this.updateXPos(1, increment);
+				}
+				this.draw();
+			},
+			reset:function() {
+				this.xPos[0] = 0;
+				this.xPos[1] = HorizonLine.dimensions.WIDTH;
+			}
+		};
+
+
+		//云
+		Cloud.config = {
+			HEIGHT:14,
+			MAX_CLOUD_GAP:400,
+			MAX_SKY_LEVEL:30,
+			MIN_CLOUD_GAP:100,
+			MIN_SKY_LEVEL:71,
+			WIDTH:46
+		};
+
+		function getRandomNum(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function getTimeStamp() {
+			return performance.now();
+		}
+
+		function Cloud(canvas,spritePos,containerWidth) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.spritePos = spritePos;
+			this.containerWidth = containerWidth;
+			this.xPos = containerWidth;
+			this.yPos = 0;
+			this.remove = false;
+			//云间隙
+			this.cloudGap = getRandomNum(Cloud.config.MIN_CLOUD_GAP,Cloud.config.MAX_CLOUD_GAP);
+			this.init();
+		}
+
+		Cloud.prototype = {
+			init:function() {
+				//云的高度随机
+				this.yPos = getRandomNum(Cloud.config.MAX_SKY_LEVEL,Cloud.config.MIN_SKY_LEVEL);
+				this.draw();
+			},
+			draw:function() {
+				this.ctx.save();
+				var sourceWidth = Cloud.config.WIDTH,
+					sourceHeight = Cloud.config.HEIGHT;
+
+				this.ctx.drawImage(imgSprite,
+					this.spritePos.x,this.spritePos.y,
+					sourceWidth,sourceHeight,
+					this.xPos,this.yPos,
+					sourceWidth,sourceHeight);
+
+				this.ctx.restore();
+			},
+			update:function(speed) {
+				if(!this.remove) {
+					//向左移动
+					this.xPos -= Math.ceil(speed);
+					this.draw();
+
+					if(!this.isVisible()) {
+						this.remove = true;
+					}
+				}
+			},
+			//判断是否移出屏幕外
+			isVisible:function() {
+				return this.xPos + Cloud.config.WIDTH > 0;
+			}
+		};
+
+		//夜晚
+		//todo
+		NightMode.config = {
+		  FADE_SPEED: 0.035,	//淡入淡出速度
+		  HEIGHT: 40,	//月亮高度
+		  MOON_SPEED: 0.25,	//月亮移动速度
+		  NUM_STARS: 2,	//星星数量
+		  STAR_SIZE: 9,	//星星宽度
+		  STAR_SPEED: 0.3,//星星速度
+		  STAR_MAX_Y: 70,	//星星在画布上出现的位置
+		  WIDTH: 20	//半个月度宽度
+		};
+		NightMode.phases = [140,120,100,60,40,20,0];
+		function NightMode(canvas,spritePos,containerWidth) {
+			this.spritePos = spritePos;
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.containerWidth = containerWidth;
+			this.xPos = containerWidth - 50;	//月亮的x坐标
+			this.yPos = 30;	//月亮的y坐标
+			this.currentPhase = 0;
+			this.opacity = 0;
+			this.stars = [];	//用于存储星星
+			this.drawStars = false;
+			this.placeStars();	//放置星星
+		}
+
+		NightMode.prototype = {
+			update:function(activated) {
+				if(activated && this.opacity == 0) {
+					this.currentPhase++;
+					if(this.currentPhase >= NightMode.phases.length) {
+						this.currentPhase = 0;
+					}
+				}
+
+				//淡入淡出
+				if(activated && (this.opacity < 1 || this.opacity == 0)) {
+					this.opacity += NightMode.config.FADE_SPEED;
+				} else if(this.opacity > 0) {
+					this.opacity -= NightMode.config.FADE_SPEED;
+				}
+
+				//移动月亮
+				if(this.opacity > 0) {
+					this.xPos = this.updateXPos(this.xPos, NightMode.config.MOON_SPEED);
+
+					//移动星星
+					if(this.drawStars) {
+						for (var i = 0; i < NightMode.config.NUM_STARS; i++) {
+							this.stars[i].x = this.updateXPos(this.stars[i].x,NightMode.config.STAR_SPEED);
+						}
+					}
+					this.draw();
+				} else {
+					this.opacity = 0;
+					this.placeStars();
+				}
+				this.drawStars = true;
+			},
+			updateXPos: function(currentPos, speed) {
+			    if (currentPos < -NightMode.config.WIDTH) {
+			    	currentPos = this.containerWidth;
+			    } else {
+			    	currentPos -= speed;
+				}
+				return currentPos;
+			},
+			draw:function() {
+				var moonSourceWidth = this.currentPhase == 3 ? NightMode.config.WIDTH * 2 :
+			         NightMode.config.WIDTH;
+			    var moonSourceHeight = NightMode.config.HEIGHT;
+			    var moonSourceX = this.spritePos.x + NightMode.phases[this.currentPhase];
+			    var moonOutputWidth = moonSourceWidth;
+			    var starSize = NightMode.config.STAR_SIZE;
+			    var starSourceX = spriteDefinition.STAR.x;
+
+			    this.ctx.save();
+    			this.ctx.globalAlpha = this.opacity;
+
+    			if (this.drawStars) {
+					for (var i = 0; i < NightMode.config.NUM_STARS; i++) {
+						this.ctx.drawImage(imgSprite,
+						    starSourceX, this.stars[i].sourceY,
+							starSize, starSize,
+						    Math.round(this.stars[i].x), this.stars[i].y,
+						    NightMode.config.STAR_SIZE, NightMode.config.STAR_SIZE);
+					}
+				}
+
+				this.ctx.drawImage(imgSprite,
+					moonSourceX, this.spritePos.y,
+					moonSourceWidth, moonSourceHeight,
+			        Math.round(this.xPos), this.yPos,
+			        moonOutputWidth, NightMode.config.HEIGHT);
+
+			    this.ctx.globalAlpha = 1;
+			    this.ctx.restore();
+			},
+			placeStars:function() {
+				var segmentSize = Math.round(this.containerWidth /NightMode.config.NUM_STARS);
+				for (var i = 0; i < NightMode.config.NUM_STARS; i++) {
+					this.stars[i] = {};
+					this.stars[i].x = getRandomNum(segmentSize * i, segmentSize * (i + 1));
+					this.stars[i].y = getRandomNum(0, NightMode.config.STAR_MAX_Y);
+					this.stars[i].sourceY = spriteDefinition.STAR.y + NightMode.config.STAR_SIZE * i;
+				}
+			},
+			reset: function() {
+				this.currentPhase = 0;
+				this.opacity = 0;
+				this.update(false);
+			}
+		};
+
+		//todo:
+		// this.horizon = new Horizon(this.canvas, this.spriteDef, this.dimensions,
+        //this.config.GAP_COEFFICIENT);
+		Horizon.config = {
+			BG_CLOUD_SPEED: 0.2,
+			BUMPY_THRESHOLD: .3,
+			CLOUD_FREQUENCY: .5,
+			HORIZON_HEIGHT: 16,
+			MAX_CLOUDS: 6
+		};
+		//地形
+		function Horizon(canvas, spritePos, dimensions, gapCoefficient) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext("2d");
+			this.config = Horizon.config;
+			this.dimensions = dimensions;
+			this.gapCoefficient = gapCoefficient;
+			//障碍物列表
+			this.obstacles = [];
+			this.obstacleHistory = [];
+			this.horizonOffsets = [0,0];
+			this.cloudFrequency = this.config.CLOUD_FREQUENCY;
+			this.spritePos = spritePos;
+			this.nightMode = null;
+
+			//云
+			this.clouds = [];
+			this.cloudSpeed = this.config.BG_CLOUD_SPEED;
+
+			//地面
+			this.horizonLine = null;
+			this.init();
+		}
+
+		Horizon.prototype = {
+			//初始化地平面，云
+			init:function() {
+				this.addCloud();
+				this.horizonLine = new HorizonLine(this.canvas,this.spritePos.HORIZON);
+				this.nightMode = new NightMode(this.canvas,this.spritePos.MOON,this.dimensions.WIDTH);
+			},
+			update:function(deltaTime,currentSpeed,updateObstacles,showNightMode) {
+				this.runningTime += deltaTime;
+				this.horizonLine.update(deltaTime,currentSpeed);
+				this.nightMode.update(showNightMode);
+				this.updateClouds(deltaTime,currentSpeed);
+
+				if(updateObstacles) {
+					this.updateObstacles(deltaTime,currentSpeed);
+				}
+			},
+			updateClouds:function(deltaTime,speed) {
+				var cloudSpeed = this.cloudSpeed / 1000 * deltaTime * speed;
+				var numClouds = this.clouds.length;
+
+				if(numClouds) {
+					for(var i = numClouds - 1; i >= 0; i--) {
+						this.clouds[i].update(cloudSpeed);
+					}
+					var lastCloud = this.clouds[numClouds - 1];
+					if(numClouds < this.config.MAX_CLOUDS && 
+						(this.dimensions.WIDTH - lastCloud.xPos) > lastCloud.cloudGap &&
+						this.cloudFrequency > Math.random()) {
+						this.addCloud();
+					}
+
+					this.clouds = this.clouds.filter(function(obj){
+						return !obj.remove;
+					});
+				} else {
+					this.addCloud();
+				}
+			},
+			updateObstacles: function(deltaTime, currentSpeed) {
+				// Obstacles, move to Horizon layer.
+				var updatedObstacles = this.obstacles.slice(0);
+
+				for (var i = 0; i < this.obstacles.length; i++) {
+					var obstacle = this.obstacles[i];
+					obstacle.update(deltaTime, currentSpeed);
+
+					// Clean up existing obstacles.
+					if (obstacle.remove) {
+						updatedObstacles.shift();
+					}
+				}
+				this.obstacles = updatedObstacles;
+
+				if (this.obstacles.length > 0) {
+					var lastObstacle = this.obstacles[this.obstacles.length - 1];
+
+					if (lastObstacle && !lastObstacle.followingObstacleCreated &&
+							lastObstacle.isVisible() &&
+							(lastObstacle.xPos + lastObstacle.width + lastObstacle.gap) <
+							this.dimensions.WIDTH) {
+						this.addNewObstacle(currentSpeed);
+						lastObstacle.followingObstacleCreated = true;
+					}
+				} else {
+					// Create new obstacles.
+					this.addNewObstacle(currentSpeed);
+				}
+			},
+			removeFirstObstacle:function() {
+				this.obstacles.shift();
+			},
+			addNewObstacle:function(currentSpeed) {
+				var obstacleTypeIndex = getRandomNum(0,Obstacle.types.length - 1);
+				var obstacleType = Obstacle.types[obstacleTypeIndex];
+
+				if(this.duplicateObstacleCheck(obstacleType.type) || currentSpeed < obstacleType.minSpeed) {
+					this.addNewObstacle(currentSpeed);
+				} else {
+					var obstacleSpritePos = this.spritePos[obstacleType.type];
+					this.obstacles.push(new Obstacle(this.ctx,obstacleType,obstacleSpritePos,this.dimensions,
+						this.gapCoefficient,currentSpeed,obstacleType.width));
+
+					this.obstacleHistory.unshift(obstacleType.type);
+				}
+
+				if (this.obstacleHistory.length > 1) {
+					this.obstacleHistory.splice(Runner.config.MAX_OBSTACLE_DUPLICATION);
+				}
+			},
+			duplicateObstacleCheck:function(nextObstacleType) {
+				var duplicateCount = 0;
+
+				for(var i = 0; i < this.obstacleHistory.length; i++) {
+					duplicateCount = this.obstacleHistory[i] == nextObstacleType ? duplicateCount + 1 : 0;
+				}
+				return duplicateCount >= Runner.config.MAX_OBSTACLE_DUPLICATION;
+			},
+			reset: function() {
+				this.obstacles = [];
+				this.horizonLine.reset();
+				this.nightMode.reset();
+			},
+			resize: function(width, height) {
+				this.canvas.width = width;
+				this.canvas.height = height;
+			},
+			addCloud: function() {
+    			this.clouds.push(new Cloud(this.canvas, this.spritePos.CLOUD,this.dimensions.WIDTH));
+  			}
+		};
+
+		
+		Obstacle.MAX_GAP_COEFFICIENT = 1.5;
+		Obstacle.MAX_OBSTACLE_LENGTH = 3;
+		Obstacle.types = [
+			{
+				type: 'CACTUS_SMALL',
+				width: 17,
+				height: 35,
+				yPos: 105,
+				multipleSpeed: 4,
+				minGap: 120,
+				minSpeed: 0,
+				collisionBoxes: [
+					new CollisionBox(0, 7, 5, 27),
+					new CollisionBox(4, 0, 6, 34),
+					new CollisionBox(10, 4, 7, 14)
+				]
+			},
+			{
+				type: 'CACTUS_LARGE',
+				width: 25,
+				height: 50,
+				yPos: 90,
+				multipleSpeed: 7,
+				minGap: 120,
+				minSpeed: 0,
+				collisionBoxes: [
+					new CollisionBox(0, 12, 7, 38),
+					new CollisionBox(8, 0, 7, 49),
+					new CollisionBox(13, 10, 10, 38)
+				]
+			},
+			{
+				type: 'PTERODACTYL',
+				width: 46,
+				height: 40,
+				yPos: [ 100, 75, 50 ], // Variable height. 高、中、低三种高度
+				yPosMobile: [ 100, 50 ], // Variable height mobile.
+				multipleSpeed: 999,
+				minSpeed: 8.5,
+				minGap: 150,
+				collisionBoxes: [
+					new CollisionBox(15, 15, 16, 5),
+					new CollisionBox(18, 21, 24, 6),
+					new CollisionBox(2, 14, 4, 3),
+					new CollisionBox(6, 10, 4, 7),
+					new CollisionBox(10, 8, 6, 9)
+				],
+				numFrames: 2,
+				frameRate: 1000/6,
+				speedOffset: .8
+			}
+		];
+		
+		function Obstacle(ctx,type,spriteImgPos,dimensions,gapCoefficient,speed,opt_xOffset) {
+			this.ctx = ctx;
+			this.spritePos = spriteImgPos;
+			//障碍物类型(仙人掌、翼龙)
+			this.typeConfig = type;
+			this.gapCoefficient = gapCoefficient;
+			this.size = getRandomNum(1,Obstacle.MAX_OBSTACLE_LENGTH);
+			this.dimensions = dimensions;
+			this.remove = false;
+			this.xPos = dimensions.WIDTH + (opt_xOffset || 0);
+			this.yPos = 0;
+			this.width = 0;
+			this.collisionBoxes = [];
+			this.gap = 0;
+			this.speedOffset = 0;
+
+			// For animated obstacles.
+			this.currentFrame = 0;
+			this.timer = 0;
+
+			this.init(speed);
+		}
+
+		Obstacle.prototype = {
+			init:function(speed) {
+				this.cloneCollisionBoxes();
+				//若multipleSpeed大于移动速度，则只出现一个障碍物
+				if (this.size > 1 && this.typeConfig.multipleSpeed > speed) {
+					this.size = 1;
+				}
+
+				this.width = this.typeConfig.width * this.size;
+
+				if (Array.isArray(this.typeConfig.yPos))  {
+				    var yPosConfig = this.typeConfig.yPos;
+					this.yPos = yPosConfig[getRandomNum(0, yPosConfig.length - 1)];
+				} else {
+					this.yPos = this.typeConfig.yPos;
+				}
+
+				this.draw();
+
+				if (this.size > 1) {
+					this.collisionBoxes[1].width = this.width - this.collisionBoxes[0].width -
+							this.collisionBoxes[2].width;
+
+					this.collisionBoxes[2].x = this.width - this.collisionBoxes[2].width;
+				}
+
+				if (this.typeConfig.speedOffset) {
+					this.speedOffset = Math.random() > 0.5 ? this.typeConfig.speedOffset :
+							-this.typeConfig.speedOffset;
+				}
+
+				this.gap = this.getGap(this.gapCoefficient, speed);
+			},
+			draw:function() {
+				var sourceWidth = this.typeConfig.width;
+				var sourceHeight = this.typeConfig.height;
+				var sourceX = (sourceWidth * this.size) * (0.5 * (this.size - 1)) +
+						this.spritePos.x;
+
+				// Animation frames.
+				if (this.currentFrame > 0) {
+					sourceX += sourceWidth * this.currentFrame;
+				}
+				this.ctx.drawImage(imgSprite,
+						sourceX, this.spritePos.y,
+						sourceWidth * this.size, sourceHeight,
+						this.xPos, this.yPos,
+                    	sourceWidth * this.size, sourceHeight);
+			},
+			update:function(deltaTime, speed) {
+				if (!this.remove) {
+					if (this.typeConfig.speedOffset) {
+						speed += this.speedOffset;
+					}
+					this.xPos -= Math.floor((speed * FPS / 1000) * deltaTime);
+
+					// Update frame
+					if (this.typeConfig.numFrames) {
+						this.timer += deltaTime;
+						if (this.timer >= this.typeConfig.frameRate) {
+							this.currentFrame =
+									this.currentFrame == this.typeConfig.numFrames - 1 ?
+											0 : this.currentFrame + 1;
+							this.timer = 0;
+						}
+					}
+					this.draw();
+
+					if (!this.isVisible()) {
+						this.remove = true;
+					}
+				}
+			},
+			getGap: function(gapCoefficient, speed) {
+				var minGap = Math.round(this.width * speed +
+						this.typeConfig.minGap * gapCoefficient);
+				var maxGap = Math.round(minGap * Obstacle.MAX_GAP_COEFFICIENT);
+				return getRandomNum(minGap, maxGap);
+			},
+			isVisible: function() {
+				return this.xPos + this.width > 0;
+			},
+			cloneCollisionBoxes: function() {
+				var collisionBoxes = this.typeConfig.collisionBoxes;
+
+				for (var i = collisionBoxes.length - 1; i >= 0; i--) {
+					this.collisionBoxes[i] = new CollisionBox(collisionBoxes[i].x,
+							collisionBoxes[i].y, collisionBoxes[i].width,
+							collisionBoxes[i].height);
+				}
+			}
+		};
+
+		DistanceMeter.dimensions = {
+			WIDTH: 10,
+			HEIGHT: 13,
+			DEST_WIDTH: 11
+		};
+		DistanceMeter.yPos = [0, 13, 27, 40, 53, 67, 80, 93, 107, 120];
+		DistanceMeter.config = {
+			// Number of digits.
+			MAX_DISTANCE_UNITS: 5,
+
+			// Distance that causes achievement animation.
+			ACHIEVEMENT_DISTANCE: 100,
+
+			// Used for conversion from pixel distance to a scaled unit.
+			COEFFICIENT: 0.025,
+
+			// Flash duration in milliseconds.
+			FLASH_DURATION: 1000 / 4,
+
+			// Flash iterations for achievement animation.
+			FLASH_ITERATIONS: 3
+		};
+
+		function DistanceMeter(canvas, spritePos, canvasWidth) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext('2d');
+			this.image = imgSprite;
+			this.spritePos = spritePos;
+			this.x = 0;
+			this.y = 5;
+
+			this.currentDistance = 0;
+			this.maxScore = 0;
+			this.highScore = 0;
+			this.container = null;
+
+			this.digits = [];
+			this.acheivement = false;
+			this.defaultString = '';
+			this.flashTimer = 0;
+			this.flashIterations = 0;
+			this.invertTrigger = false;
+
+			this.config = DistanceMeter.config;
+			this.maxScoreUnits = this.config.MAX_DISTANCE_UNITS;
+			this.init(canvasWidth);
+		}
+
+		DistanceMeter.prototype = {
+			init: function(width) {
+				var maxDistanceStr = '';
+
+				this.calcXPos(width);
+				this.maxScore = this.maxScoreUnits;
+				for (var i = 0; i < this.maxScoreUnits; i++) {
+					this.draw(i, 0);
+					this.defaultString += '0';
+					maxDistanceStr += '9';
+				}
+
+				this.maxScore = parseInt(maxDistanceStr);
+			},
+			calcXPos: function(canvasWidth) {
+				this.x = canvasWidth - (DistanceMeter.dimensions.DEST_WIDTH *
+						(this.maxScoreUnits + 1));
+			},
+			draw: function(digitPos, value, opt_highScore) {
+				var sourceWidth = DistanceMeter.dimensions.WIDTH;
+				var sourceHeight = DistanceMeter.dimensions.HEIGHT;
+				var sourceX = DistanceMeter.dimensions.WIDTH * value;
+				var sourceY = 0;
+
+				var targetX = digitPos * DistanceMeter.dimensions.DEST_WIDTH;
+				var targetY = this.y;
+				var targetWidth = DistanceMeter.dimensions.WIDTH;
+				var targetHeight = DistanceMeter.dimensions.HEIGHT;
+
+				sourceX += this.spritePos.x;
+				sourceY += this.spritePos.y;
+
+				this.ctx.save();
+
+				if (opt_highScore) {
+					// Left of the current score.
+					var highScoreX = this.x - (this.maxScoreUnits * 2) *
+							DistanceMeter.dimensions.WIDTH;
+					this.ctx.translate(highScoreX, this.y);
+				} else {
+					this.ctx.translate(this.x, this.y);
+				}
+				this.ctx.drawImage(this.image, sourceX, sourceY,
+						sourceWidth, sourceHeight,
+						targetX, targetY,
+						targetWidth, targetHeight
+				);
+				this.ctx.restore();
+			},
+			getActualDistance: function(distance) {
+				return distance ? Math.round(distance * this.config.COEFFICIENT) : 0;
+			},
+			update: function(deltaTime, distance) {
+				var paint = true;
+				var playSound = false;
+
+				if (!this.acheivement) {
+					distance = this.getActualDistance(distance);
+					// Score has gone beyond the initial digit count.
+					if (distance > this.maxScore && this.maxScoreUnits ==
+							this.config.MAX_DISTANCE_UNITS) {
+						this.maxScoreUnits++;
+						this.maxScore = parseInt(this.maxScore + '9');
+					} else {
+						this.distance = 0;
+					}
+
+					if (distance > 0) {
+						// Acheivement unlocked
+						if (distance % this.config.ACHIEVEMENT_DISTANCE == 0) {
+							// Flash score and play sound.
+							this.acheivement = true;
+							this.flashTimer = 0;
+							playSound = true;
+						}
+
+						// Create a string representation of the distance with leading 0.
+						var distanceStr = (this.defaultString +
+						distance).substr(-this.maxScoreUnits);
+						this.digits = distanceStr.split('');
+					} else {
+						this.digits = this.defaultString.split('');
+					}
+				} else {
+					// Control flashing of the score on reaching acheivement.
+					if (this.flashIterations <= this.config.FLASH_ITERATIONS) {
+						this.flashTimer += deltaTime;
+
+						if (this.flashTimer < this.config.FLASH_DURATION) {
+							paint = false;
+						} else if (this.flashTimer >
+								this.config.FLASH_DURATION * 2) {
+							this.flashTimer = 0;
+							this.flashIterations++;
+						}
+					} else {
+						this.acheivement = false;
+						this.flashIterations = 0;
+						this.flashTimer = 0;
+					}
+				}
+
+				// Draw the digits if not flashing.
+				if (paint) {
+					for (var i = this.digits.length - 1; i >= 0; i--) {
+						this.draw(i, parseInt(this.digits[i]));
+					}
+				}
+
+				this.drawHighScore();
+				return playSound;
+			},
+			drawHighScore: function() {
+				this.ctx.save();
+				this.ctx.globalAlpha = .8;
+				for (var i = this.highScore.length - 1; i >= 0; i--) {
+					this.draw(i, parseInt(this.highScore[i], 10), true);
+				}
+				this.ctx.restore();
+			},
+			setHighScore: function(distance) {
+				distance = this.getActualDistance(distance);
+				var highScoreStr = (this.defaultString +
+				distance).substr(-this.maxScoreUnits);
+
+				this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
+			},
+			reset: function() {
+				this.update(0);
+				this.acheivement = false;
+			}
+		};
+
+
+		/**
+		 * 碰撞检测盒子
+		 * @param x	{number} x坐标
+		 * @param y {number} y坐标
+		 * @param w	{number} 宽度
+         * @param h	{number} 高度
+         */
+		//todo:碰撞检测
+		function CollisionBox(x,y,w,h) {
+			this.x = x;
+			this.y = y;
+			this.width = w;
+			this.height = h;
+		}
+
+		function checkForCollision(obstacle, tRex, opt_canvasCtx) {
+			var obstacleBoxXPos = Runner.defaultDimensions.WIDTH + obstacle.xPos;
+			var tRexBox = new CollisionBox(
+					tRex.xPos + 1,
+					tRex.yPos + 1,
+					tRex.config.WIDTH - 2,
+					tRex.config.HEIGHT - 2);
+			var obstacleBox = new CollisionBox(
+					obstacle.xPos + 1,
+					obstacle.yPos + 1,
+					obstacle.typeConfig.width * obstacle.size - 2,
+					obstacle.typeConfig.height - 2);
+
+			if (opt_canvasCtx) {
+				drawCollisionBoxes(opt_canvasCtx, tRexBox, obstacleBox);
+			}
+			if (boxCompare(tRexBox, obstacleBox)) {
+				var collisionBoxes = obstacle.collisionBoxes;
+				var tRexCollisionBoxes = tRex.ducking ?
+						Trex.collisionBoxes.DUCKING : Trex.collisionBoxes.RUNNING;
+
+				for (var t = 0; t < tRexCollisionBoxes.length; t++) {
+					for (var i = 0; i < collisionBoxes.length; i++) {
+						// Adjust the box to actual positions.
+						var adjTrexBox =
+								createAdjustedCollisionBox(tRexCollisionBoxes[t], tRexBox);
+						var adjObstacleBox =
+								createAdjustedCollisionBox(collisionBoxes[i], obstacleBox);
+						var crashed = boxCompare(adjTrexBox, adjObstacleBox);
+
+						// Draw boxes for debug.
+						if (opt_canvasCtx) {
+							drawCollisionBoxes(opt_canvasCtx, adjTrexBox, adjObstacleBox);
+						}
+
+						if (crashed) {
+							return [adjTrexBox, adjObstacleBox];
+						}
+					}
+				}
+			}
+			return false;
+		}
+		function createAdjustedCollisionBox(box, adjustment) {
+			return new CollisionBox(
+					box.x + adjustment.x,
+					box.y + adjustment.y,
+					box.width,
+					box.height);
+		}
+
+
+		function boxCompare(tRexBox, obstacleBox) {
+			var crashed = false;
+			var tRexBoxX = tRexBox.x;
+			var tRexBoxY = tRexBox.y;
+
+			var obstacleBoxX = obstacleBox.x;
+			var obstacleBoxY = obstacleBox.y;
+
+			// Axis-Aligned Bounding Box method.
+			if (tRexBox.x < obstacleBoxX + obstacleBox.width &&
+					tRexBox.x + tRexBox.width > obstacleBoxX &&
+					tRexBox.y < obstacleBox.y + obstacleBox.height &&
+					tRexBox.height + tRexBox.y > obstacleBox.y) {
+				crashed = true;
+			}
+
+			return crashed;
+		}
+
+		function drawCollisionBoxes(canvasCtx, tRexBox, obstacleBox) {
+			canvasCtx.save();
+			canvasCtx.lineWidth = 0.5;
+			canvasCtx.strokeStyle = '#f00';
+			canvasCtx.strokeRect(tRexBox.x+0.5, tRexBox.y+0.5, tRexBox.width, tRexBox.height);
+
+			canvasCtx.strokeStyle = '#0f0';
+			canvasCtx.strokeRect(obstacleBox.x+0.5, obstacleBox.y+0.5,
+					obstacleBox.width, obstacleBox.height);
+			canvasCtx.restore();
+		}
+
+		Trex.config = {
+			DROP_VELOCITY: -5,	//下落速度
+			GRAVITY: 0.6,	//重力
+			HEIGHT: 47,	//站立时高度
+			HEIGHT_DUCK: 25,	//闪躲时高度
+			INIITAL_JUMP_VELOCITY: -10,//初始起跳速度
+			INTRO_DURATION: 1500,
+			MAX_JUMP_HEIGHT: 30,	//最大起跳高度
+			MIN_JUMP_HEIGHT: 30,	//最小起跳高度
+			SPEED_DROP_COEFFICIENT: 3,
+			SPRITE_WIDTH: 262,	//雪碧图霸王龙部分的宽度(不包含闪避动作)
+			START_X_POS: 50,	//在画布的起始位置
+			WIDTH: 44,		//站立时宽度
+			WIDTH_DUCK: 59	//闪避时宽度
+		};
+
+		Trex.status = {
+			CRASHED: 'CRASHED',	//碰到障碍物
+			DUCKING: 'DUCKING',	//闪避
+			JUMPING: 'JUMPING',	//跳跃
+			RUNNING: 'RUNNING',	//跑动
+			WAITING: 'WAITING'	//等待
+		};
+
+		Trex.BLINK_TIMING = 3000;
+
+		Trex.collisionBoxes = {
+			DUCKING:[
+				new CollisionBox(1,18,55,25)
+			],
+			RUNNING: [
+				new CollisionBox(22, 0, 17, 16),
+				new CollisionBox(1, 18, 30, 9),
+				new CollisionBox(10, 35, 14, 8),
+				new CollisionBox(1, 24, 29, 5),
+				new CollisionBox(5, 30, 21, 4),
+				new CollisionBox(9, 34, 15, 4)
+			]
+		};
+
+		Trex.animFrames = {
+			WAITING: {
+				frames: [44, 0],
+				msPerFrame: 1000 / 3
+			},
+			RUNNING: {
+				frames: [88, 132],
+				msPerFrame: 1000 / 12
+			},
+			CRASHED: {
+				frames: [220],
+				msPerFrame: 1000 / 60
+			},
+			JUMPING: {
+				frames: [0],
+				msPerFrame: 1000 / 60
+			},
+			DUCKING: {
+				frames: [262, 321],
+				msPerFrame: 1000 / 8
+			}
+		};
+
+		function Trex(canvas,spritePos) {
+			this.canvas = canvas;
+			this.ctx = canvas.getContext('2d');
+			this.spritePos = spritePos;
+			this.xPos = 0;
+			this.yPos = 0;
+			//站立时的Y轴坐标
+			this.groundYPos = 0;
+			this.currentFrame = 0;
+			this.currentAnimFrames = [];
+			this.blinkDelay = 0;
+			this.animStartTime = 0;
+			this.timer = 0;
+			this.msPerFrame = 1000 / FPS;
+			this.config = Trex.config;
+			//当前的动作为等待状态
+			this.status = Trex.status.WAITING;
+
+			this.jumping = false;	//是否跳跃
+			this.ducking = false;	//是否闪避
+			this.jumpVelocity = 0;
+			this.reachedMinHeight = false;
+			this.speedDrop = false;
+			this.jumpCount = 0;
+			this.jumpspotX = 0;	//空降着陆点
+
+			this.init();
+		}
+		Trex.prototype = {
+			init:function() {
+				this.blinkDelay = this.setBlinkDelay();
+				this.groundYPos = Runner.defaultDimensions.HEIGHT - this.config.HEIGHT -
+						Runner.config.BOTTOM_PAD;
+				this.yPos = this.groundYPos;
+
+				this.minJumpHeight = this.groundYPos - this.config.MIN_JUMP_HEIGHT;
+				this.draw(0,0);
+				this.update(0,Trex.status.WAITING);
+			},
+			setJumpVelocity: function(setting) {
+				this.config.INIITAL_JUMP_VELOCITY = -setting;
+				this.config.DROP_VELOCITY = -setting / 2;
+			},
+			update:function(deltaTime,opt_status) {
+				this.timer += deltaTime;
+				if(opt_status) {
+					this.status = opt_status;
+					this.currentFrame = 0;
+					this.msPerFrame = Trex.animFrames[opt_status].msPerFrame;
+					this.currentAnimFrames = Trex.animFrames[opt_status].frames;
+
+					if(opt_status == Trex.status.WAITING) {
+						this.animStartTime = getTimeStamp();
+						this.setBlinkDelay();
+					}
+				}
+				if (this.playingIntro && this.xPos < this.config.START_X_POS) {
+					this.xPos += Math.round((this.config.START_X_POS /
+							this.config.INTRO_DURATION) * deltaTime);
+				}
+
+				if (this.status == Trex.status.WAITING) {
+					this.blink(getTimeStamp());
+				} else {
+					this.draw(this.currentAnimFrames[this.currentFrame], 0);
+				}
+
+				if (this.timer >= this.msPerFrame) {
+					this.currentFrame = this.currentFrame ==
+					this.currentAnimFrames.length - 1 ? 0 : this.currentFrame + 1;
+					this.timer = 0;
+				}
+
+				if (this.speedDrop && this.yPos == this.groundYPos) {
+					this.speedDrop = false;
+					this.setDuck(true);
+				}
+			},
+			setBlinkDelay: function() {
+				this.blinkDelay = Math.ceil(Math.random() * Trex.BLINK_TIMING);
+			},
+			blink: function(time) {
+				var deltaTime = time - this.animStartTime;
+
+				if (deltaTime >= this.blinkDelay) {
+					this.draw(this.currentAnimFrames[this.currentFrame], 0);
+
+					if (this.currentFrame == 1) {
+						// Set new random delay to blink.
+						this.setBlinkDelay();
+						this.animStartTime = time;
+					}
+				}
+			},
+			startJump:function(speed) {
+				if(!this.jumping) {
+					this.update(0, Trex.status.JUMPING);
+					this.jumpVelocity = this.config.INIITAL_JUMP_VELOCITY - (speed / 10);
+					this.jumping = true;
+					this.reachedMinHeight = false;
+					this.speedDrop = false;
+				}
+			},
+			endJump: function() {
+				if (this.reachedMinHeight && this.jumpVelocity < this.config.DROP_VELOCITY) {
+					this.jumpVelocity = this.config.DROP_VELOCITY;
+				}
+			},
+			updateJump:function(deltaTime,speed) {
+				var msPerFrame = Trex.animFrames[this.status].msPerFrame;
+				var framesElapsed = deltaTime / msPerFrame;
+
+				if(this.speedDrop) {
+					this.yPos += Math.round(this.jumpVelocity *
+							this.config.SPEED_DROP_COEFFICIENT * framesElapsed);
+				} else {
+					this.yPos += Math.round(this.jumpVelocity * framesElapsed);
+				}
+
+				this.jumpVelocity += this.config.GRAVITY * framesElapsed;
+
+				if (this.yPos < this.minJumpHeight || this.speedDrop) {
+					this.reachedMinHeight = true;
+				}
+				if (this.yPos < this.config.MAX_JUMP_HEIGHT || this.speedDrop) {
+					this.endJump();
+				}
+
+				if (this.yPos > this.groundYPos) {
+					this.reset();
+					this.jumpCount++;
+				}
+
+				this.update(deltaTime);
+			},
+			setSpeedDrop: function() {
+				this.speedDrop = true;
+				this.jumpVelocity = 1;
+			},
+			setDuck: function(isDucking) {
+				if (isDucking && this.status != Trex.status.DUCKING) {
+					this.update(0, Trex.status.DUCKING);
+					this.ducking = true;
+				} else if (this.status == Trex.status.DUCKING) {
+					this.update(0, Trex.status.RUNNING);
+					this.ducking = false;
+				}
+			},
+			draw:function(x,y) {
+				var sourceX = x;
+				var sourceY = y;
+				var sourceWidth = this.ducking && this.status != Trex.status.CRASHED ?
+						this.config.WIDTH_DUCK : this.config.WIDTH;
+				var sourceHeight = this.config.HEIGHT;
+				sourceX += this.spritePos.x;
+				sourceY += this.spritePos.y;
+
+				if (this.ducking && this.status != Trex.status.CRASHED) {
+					this.ctx.drawImage(imgSprite, sourceX, sourceY,
+							sourceWidth, sourceHeight,
+							this.xPos, this.yPos,
+							this.config.WIDTH_DUCK, this.config.HEIGHT);
+				} else {
+					if (this.ducking && this.status == Trex.status.CRASHED) {
+						this.xPos++;
+					}
+
+					this.ctx.drawImage(imgSprite, sourceX, sourceY,
+							sourceWidth, sourceHeight,
+							this.xPos, this.yPos,
+							this.config.WIDTH, this.config.HEIGHT);
+				}
+			},
+			reset: function() {
+				this.yPos = this.groundYPos;
+				this.jumpVelocity = 0;
+				this.jumping = false;
+				this.ducking = false;
+				this.update(0, Trex.status.RUNNING);
+				this.midair = false;
+				this.speedDrop = false;
+				this.jumpCount = 0;
+			}
+		};
+
+
+		var now = getTimeStamp();
+
+		//不写onload方法就显示不出图片
+		window.onload = function() {
+			var runner = new Runner('.interstitial-wrapper');
+		};
+// ]]></script>
+</span></p>
+<blockquote>
+<p><span style="font-size: 18px;">总结</span></p>
+</blockquote>
+<p>　　通过对这个游戏的源码进行研究，从中收获了不少干货，对2d游戏的制作思路有一定的启发，特别是基于时间的运动有了进一步的认识。游戏大致可以划分为以下功能：</p>
+<p><img src="https://images2015.cnblogs.com/blog/428166/201612/428166-20161216203432792-1816464709.png" alt="" /></p>
+<p>大部分构造函数里都包含了一个名为update的方法，在每次GameLoop里调用以更新该游戏元件的状态，并根据条件判断是否在画布上绘制(draw)。</p>
+<p>暂时就想到这么多，接下来就是以开发一个2D游戏为目标努力了。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2016-12-16 20:49</span> <a href='http://www.cnblogs.com/undefined000/'>逐影</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=6180704" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(6180704);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=122709,cb_entryId=6180704,cb_blogApp=currentBlogApp,cb_blogUserGuid='938e1044-38cf-e111-aa3f-842b2b196315',cb_entryCreatedDate='2016/12/16 20:49:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<div id='cnblogs_c2' class='c_ad_block'></div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 逐影
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+</body>
+</html>
